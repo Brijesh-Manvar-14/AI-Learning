@@ -1,0 +1,53 @@
+{{ 'waymakers-home.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign fallback_product_1 = 'wm-product-1.png' | asset_url
+  assign fallback_product_4 = 'wm-product-4.png' | asset_url
+  assign fallback_badge = 'wm-press-6.png' | asset_url
+  assign arrow = 'wm-arrow.svg' | asset_url
+-%}
+
+<section class="wm-why wm-container" style="--wm-peanut-dot: url({{ fallback_product_4 }});" aria-labelledby="wm-why-title-{{ section.id }}">
+  <div class="wm-why__media" aria-hidden="true">
+    <div class="wm-why__block"></div>
+    {%- if section.settings.main_image != blank -%}
+      <img class="wm-why__main" src="{{ section.settings.main_image | image_url: width: 900 }}" alt="" loading="lazy" width="438" height="563">
+    {%- else -%}
+      <img class="wm-why__main" src="{{ fallback_product_4 }}" alt="" loading="lazy" width="438" height="563">
+    {%- endif -%}
+    {%- if section.settings.side_image != blank -%}
+      <img class="wm-why__side" src="{{ section.settings.side_image | image_url: width: 420 }}" alt="" loading="lazy" width="183" height="357">
+    {%- else -%}
+      <img class="wm-why__side" src="{{ fallback_product_1 }}" alt="" loading="lazy" width="183" height="357">
+    {%- endif -%}
+    {%- if section.settings.badge != blank -%}
+      <img class="wm-why__badge" src="{{ section.settings.badge | image_url: width: 260 }}" alt="" loading="lazy" width="131" height="131">
+    {%- else -%}
+      <img class="wm-why__badge" src="{{ fallback_badge }}" alt="" loading="lazy" width="131" height="131">
+    {%- endif -%}
+  </div>
+  <div class="wm-why__content">
+    <h2 id="wm-why-title-{{ section.id }}" class="wm-heading">{{ section.settings.heading }} <span class="wm-peanut-dot" aria-hidden="true"></span></h2>
+    <p>{{ section.settings.text }}</p>
+    <a class="wm-button" href="{{ section.settings.button_link | default: '/pages/waymakers-effect' }}">
+      {{ section.settings.button_label }}
+      <img src="{{ arrow }}" alt="" width="8" height="13">
+    </a>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "WayMakers image text",
+  "settings": [
+    { "type": "image_picker", "id": "main_image", "label": "Main image" },
+    { "type": "image_picker", "id": "side_image", "label": "Side product image" },
+    { "type": "image_picker", "id": "badge", "label": "Badge image" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "MEER DAN ALLEEN PINDAKAAS" },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "Bij WayMakers verkopen we de meest creatieve en lekkerste smaken pindakaas van Nederland. Unieke combinaties die je nergens anders vindt, handgemaakt met zorgvuldig geselecteerde ingrediënten. Geen massaproductie, maar ambachtelijke kwaliteit. Plus: 10% van onze winst gaat naar initiatieven die écht impact maken. Met elke hap draag jij bij!" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Lees Meer" },
+    { "type": "url", "id": "button_link", "label": "Button link" }
+  ],
+  "presets": [{ "name": "WayMakers image text" }]
+}
+{% endschema %}

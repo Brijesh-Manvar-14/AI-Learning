@@ -1,0 +1,143 @@
+{{ 'custom-product.css' | asset_url | stylesheet_tag }}
+<div class="custom-product-section">
+  {% for block in section.blocks %}
+    {% assign product = all_products[block.settings.product] %}
+    {% if product %}
+      <div class="product-wrapper">
+        <div class="product-image">
+          <img src="{{ product.featured_image | img_url: 'large' }}" alt="{{ product.title }}">
+        </div>
+        <div class="product-info">
+          <div class="product-info-content">
+          <h2>{{ product.title }}</h2>
+
+        
+          <div class="star-rating" data-rating="{{ block.settings.rating }}">
+  {% assign rating = block.settings.rating %}
+
+<div class="star-rating" >
+  <svg width="452" height="24" viewBox="0 0 452 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g clip-path="url(#clip0_1_43)" class="{% if rating >= 1 %}filled-star{% else %}empty-star{% endif %}">
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M11.1297 18.9545L4.58782 22.3931L5.83721 15.1102L0.544726 9.95239L7.85875 8.88983L11.1297 2.26363L14.4006 8.88983L21.7146 9.95239L16.4222 15.1102L17.6716 22.3931L11.1297 18.9545Z"/>
+    </g>
+    <g clip-path="url(#clip1_1_43)" class="{% if rating >= 2 %}filled-star{% else %}empty-star{% endif %}">
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M36.166 18.9545L29.6242 22.3931L30.8736 15.1102L25.5811 9.95239L32.8951 8.88983L36.166 2.26363L39.437 8.88983L46.751 9.95239L41.4585 15.1102L42.7079 22.3931L36.166 18.9545Z"/>
+    </g>
+    <g clip-path="url(#clip2_1_43)" class="{% if rating >= 3 %}filled-star{% else %}empty-star{% endif %}">
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M61.2024 18.9545L54.6605 22.3931L55.9099 15.1102L50.6174 9.95239L57.9315 8.88983L61.2024 2.26363L64.4733 8.88983L71.7874 9.95239L66.4949 15.1102L67.7443 22.3931L61.2024 18.9545Z"/>
+    </g>
+    <g clip-path="url(#clip3_1_43)" class="{% if rating >= 4 %}filled-star{% else %}empty-star{% endif %}">
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M86.2388 18.9545L79.6969 22.3931L80.9463 15.1102L75.6538 9.95239L82.9678 8.88983L86.2388 2.26363L89.5097 8.88983L96.8237 9.95239L91.5313 15.1102L92.7806 22.3931L86.2388 18.9545Z"/>
+    </g>
+    <g clip-path="url(#clip4_1_43)" class="{% if rating >= 5 %}filled-star{% else %}empty-star{% endif %}">
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M111.275 18.9545L104.733 22.3931L105.983 15.1102L100.69 9.95239L108.004 8.88983L111.275 2.26363L114.546 8.88983L121.86 9.95239L116.568 15.1102L117.817 22.3931L111.275 18.9545Z"/>
+    </g>
+    <defs>
+      <clipPath id="clip0_1_43">
+        <rect width="22.2545" height="22.2545" fill="white" transform="translate(0 0.872726)"/>
+      </clipPath>
+      <clipPath id="clip1_1_43">
+        <rect width="22.2545" height="22.2545" fill="white" transform="translate(25.0364 0.872726)"/>
+      </clipPath>
+      <clipPath id="clip2_1_43">
+        <rect width="22.2545" height="22.2545" fill="white" transform="translate(50.0727 0.872726)"/>
+      </clipPath>
+      <clipPath id="clip3_1_43">
+        <rect width="22.2545" height="22.2545" fill="white" transform="translate(75.1091 0.872726)"/>
+      </clipPath>
+      <clipPath id="clip4_1_43">
+        <rect width="22.2545" height="22.2545" fill="white" transform="translate(100.145 0.872726)"/>
+      </clipPath>
+    </defs>
+  </svg>
+</div>
+
+</div>
+
+
+        
+            <p class="product-description">
+              <span class="short-description">
+                {{ product.description | strip_html | truncatewords: 18 }}
+             </span>
+              <span class="more-text">
+               {{ product.description | strip_html }}
+             </span>
+           </p>
+            <a href="/collections/all" class="read-more">Read More</a>
+
+          <div class="add-cart-btn">
+          <button class="add-to-cart">
+            Add To Cart - {{ product.price | money }}
+          </button>
+          </div>
+        </div>
+        </div>
+      </div>
+    {% endif %}
+  {% endfor %}
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".read-more").click(function (e) {
+            e.preventDefault();
+            var $this = $(this);
+            var $shortDesc = $this.siblings(".product-description").find(".short-description");
+            var $fullDesc = $this.siblings(".product-description").find(".more-text");
+
+            if ($shortDesc.is(":visible")) {
+                $shortDesc.hide(); 
+                $fullDesc.show(); 
+                $this.text("Read Less"); 
+            } else {
+                $fullDesc.hide(); 
+                $shortDesc.show(); 
+                $this.text("Read More"); 
+            }
+          // $(this).parents(".product-info").find(".short-description").toggle();
+          // $(this).parents(".product-info").find(".more-text").toggle();
+          // if($(this).text() == "Read More"){
+          //   $(this).text("Read Less")
+          // }
+          // else{
+          //   $(this).text("Read More");
+          // }
+        });
+    });
+</script>
+{% schema %}
+{
+  "name": "Figma-To-Shopify",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Product",
+      "settings": [
+        {
+          "id": "product",
+          "type": "product",
+          "label": "Select Product"
+        },
+        {
+          "id": "rating",
+          "type": "range",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 4,
+          "label": "Star Rating"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Figma-To-Shopify",
+    }
+  ]
+}
+{% endschema %}
+
+

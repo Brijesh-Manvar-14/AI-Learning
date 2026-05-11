@@ -1,0 +1,88 @@
+{%- liquid
+  assign card_title = title
+  assign card_url = link | default: routes.all_products_collection_url
+  assign card_price = price_text | default: '$13.99'
+  assign card_variant = blank
+  assign fallback_src = fallback_product_1
+
+  case fallback_index
+    when 2
+      assign fallback_src = fallback_product_2
+    when 3
+      assign fallback_src = fallback_product_3
+    when 4
+      assign fallback_src = fallback_product_4
+  endcase
+
+  if product != blank
+    assign card_title = product.title
+    assign card_url = product.url
+    assign card_price = product.price | money
+    assign card_variant = product.selected_or_first_available_variant
+  endif
+
+  if card_title == blank
+    case fallback_index
+      when 1
+        assign card_title = 'Frosted Brookie Peanut Butter Treat'
+      when 2
+        assign card_title = 'Dubai chocolate bar Peanut Butter Treat'
+      when 3
+        assign card_title = 'Blureos & Cream Milkshake Cashew Butter Treat'
+      else
+        assign card_title = 'Ultimate PB Cheesecake Peanut Butter Treat'
+    endcase
+  endif
+-%}
+
+<article class="wm-product-card" role="listitem" {% if block %}{{ block.shopify_attributes }}{% endif %}>
+  <a class="wm-product-card__media" href="{{ card_url }}" aria-label="{{ card_title | escape }}">
+    {%- if image != blank -%}
+      <img src="{{ image | image_url: width: 720 }}" alt="{{ card_title | escape }}" loading="lazy" width="356" height="460">
+    {%- elsif product != blank and product.featured_media != blank -%}
+      <img
+        src="{{ product.featured_media | image_url: width: 720 }}"
+        alt="{{ product.featured_media.alt | default: card_title | escape }}"
+        loading="lazy"
+        width="356"
+        height="460"
+      >
+    {%- else -%}
+      <img src="{{ fallback_src }}" alt="{{ card_title | escape }}" loading="lazy" width="356" height="460">
+    {%- endif -%}
+  </a>
+
+  <div class="wm-product-card__info">
+    <h3 class="wm-product-card__title">
+      <a href="{{ card_url }}">{{ card_title }}</a>
+    </h3>
+
+    {%- if product != blank and card_variant != blank -%}
+      <product-form data-section-id="{{ section_id }}">
+        {%- form 'product', product, class: 'wm-product-card__form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+          <input type="hidden" name="id" value="{{ card_variant.id }}" {% unless card_variant.available %}disabled{% endunless %}>
+          <button class="wm-button wm-button--yellow wm-product-card__button" type="submit" name="add" {% unless card_variant.available %}disabled{% endunless %}>
+            <span>{{ card_price }}</span>
+            <span class="wm-product-card__divider"></span>
+            <span>
+              {%- if card_variant.available -%}
+                In winkelwagen
+              {%- else -%}
+                {{ 'products.product.sold_out' | t }}
+              {%- endif -%}
+            </span>
+            <img src="{{ arrow }}" alt="" width="8" height="13">
+            {%- render 'loading-spinner' -%}
+          </button>
+        {%- endform -%}
+      </product-form>
+    {%- else -%}
+      <a class="wm-button wm-button--yellow wm-product-card__button" href="{{ card_url }}">
+        <span>{{ card_price }}</span>
+        <span class="wm-product-card__divider"></span>
+        <span>In winkelwagen</span>
+        <img src="{{ arrow }}" alt="" width="8" height="13">
+      </a>
+    {%- endif -%}
+  </div>
+</article>

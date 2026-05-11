@@ -1,0 +1,77 @@
+{{ 'waymakers-home.css' | asset_url | stylesheet_tag }}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Lilita+One&display=swap" rel="stylesheet">
+
+{%- liquid
+  assign logo = 'wm-logo.svg' | asset_url
+  assign search_icon = 'wm-search.svg' | asset_url
+  assign account_icon = 'wm-profile.svg' | asset_url
+  assign cart_icon = 'wm-cart.svg' | asset_url
+  assign cart_badge = 'wm-cart-badge.svg' | asset_url
+  assign arrow = 'wm-arrow.svg' | asset_url
+
+  if section.settings.logo != blank
+    assign logo = section.settings.logo | image_url: width: 650
+  endif
+-%}
+
+{%- if section.settings.show_announcement -%}
+  <div class="wm-page">
+    <div class="wm-announcement">{{ section.settings.announcement_text }}</div>
+  </div>
+{%- endif -%}
+
+<header class="wm-header" aria-label="{{ shop.name | escape }}">
+  <button class="wm-menu-toggle" type="button" aria-label="{{ 'sections.header.menu' | t }}"><span></span></button>
+
+  <nav class="wm-nav" aria-label="Primary">
+    {%- if section.settings.menu != blank -%}
+      {%- for link in section.settings.menu.links limit: 5 -%}
+        <a href="{{ link.url }}">{{ link.title }}</a>
+      {%- endfor -%}
+    {%- else -%}
+      <a href="{{ routes.root_url }}">Home</a>
+      <a href="{{ routes.collections_url }}">Shop</a>
+      <a href="/products/gift-card">Cadeaubonnen</a>
+      <a href="/pages/waymakers-effect">WayMakers Effect</a>
+      <a href="{{ routes.root_url }}blogs/news">Blogs</a>
+    {%- endif -%}
+  </nav>
+
+  <a href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }}">
+    <img class="wm-logo" src="{{ logo }}" alt="{{ shop.name | escape }}" width="322" height="54">
+  </a>
+
+  <div class="wm-actions">
+    <a class="wm-icon-link" href="{{ routes.search_url }}" aria-label="{{ 'general.search.search' | t }}">
+      <img src="{{ search_icon }}" alt="" width="22" height="22">
+    </a>
+    <a class="wm-icon-link" href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" aria-label="{{ 'customer.account.title' | t }}">
+      <img src="{{ account_icon }}" alt="" width="22" height="22">
+    </a>
+    <a class="wm-icon-link wm-cart" href="{{ routes.cart_url }}" aria-label="{{ 'templates.cart.cart' | t }}">
+      <img src="{{ cart_icon }}" alt="" width="22" height="22">
+      <span class="wm-cart-count"><img src="{{ cart_badge }}" alt="" width="17" height="17"><span>{{ cart.item_count }}</span></span>
+    </a>
+    <a class="wm-button" href="{{ section.settings.button_link | default: routes.all_products_collection_url }}">
+      {{ section.settings.button_label }}
+      <img src="{{ arrow }}" alt="" width="8" height="13">
+    </a>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "WayMakers header",
+  "settings": [
+    { "type": "checkbox", "id": "show_announcement", "label": "Show announcement", "default": true },
+    { "type": "text", "id": "announcement_text", "label": "Announcement text", "default": "Get 20% off on your first purchase! Use code WELCOME20 at checkout." },
+    { "type": "image_picker", "id": "logo", "label": "Logo" },
+    { "type": "link_list", "id": "menu", "label": "Menu" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Bestel nu" },
+    { "type": "url", "id": "button_link", "label": "Button link" }
+  ],
+  "presets": [{ "name": "WayMakers header" }]
+}
+{% endschema %}

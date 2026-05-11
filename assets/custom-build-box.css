@@ -1,0 +1,150 @@
+/* MAIN CONTAINER: 1500px max width with flex */
+.collection-container {
+  max-width: 1500px;
+  margin: 0 auto;
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+}
+
+/* LEFT SIDE: all collections */
+.collection-block {
+  flex: 1;
+  margin-bottom: 40px;
+}
+
+/* PRODUCT GRID: 3 per row */
+.custom-collection-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+/* PRODUCT CARD */
+.product-box {
+  background-color: #fff;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  padding: 15px;
+  transition: box-shadow 0.3s ease;
+}
+
+.product-box:hover {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.product-box img {
+  width: 100%;
+  border-radius: 8px;
+}
+
+.product-info {
+  margin-top: 12px;
+}
+
+.product-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.product-price {
+  color: #444;
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+
+/* QUANTITY SELECTORS */
+.quantity-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  max-width: 140px;
+  margin-top: 10px;
+}
+
+.qty-btn {
+  background-color: #f0f0f0;
+  border: none;
+  padding: 8px 12px;
+  font-size: 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.qty-btn:hover {
+  background-color: #ddd;
+}
+
+.qty-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.quantity-input {
+  width: 40px;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 6px;
+  font-size: 16px;
+}
+
+/* RIGHT SIDE: VARIANT SELECTOR + BUTTON */
+.product-limit-dropdown {
+  width: 300px;
+  flex-shrink: 0;
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 20px;
+  height: fit-content;
+}
+
+.product-limit-dropdown label {
+  font-size: 16px;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.product-limit-dropdown select {
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  margin-top: 5px;
+}
+
+.quantity-message {
+  margin-top: 10px;
+  color: red;
+  font-size: 14px;
+}
+
+/* ADD TO CART BUTTON */
+.add-to-cart-button {
+  margin-top: 15px;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s ease;
+}
+
+.add-to-cart-button:disabled {
+  background-color: #aaa;
+  cursor: not-allowed;
+  pointer-events: none;
+  opacity: 0.6;
+}

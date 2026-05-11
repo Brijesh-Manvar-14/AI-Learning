@@ -1,0 +1,37 @@
+{{ 'waymakers-home.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign hero_bg = 'wm-hero-bg-1.png' | asset_url
+  assign hero_jars = 'wm-hero-bg-2.png' | asset_url
+  assign arrow = 'wm-arrow.svg' | asset_url
+  if section.settings.background != blank
+    assign hero_bg = section.settings.background | image_url: width: 2200
+  endif
+  if section.settings.foreground != blank
+    assign hero_jars = section.settings.foreground | image_url: width: 2600
+  endif
+-%}
+
+<section class="wm-hero wm-page" aria-label="{{ section.settings.label | escape }}">
+  <img class="wm-hero__image wm-hero__base" src="{{ hero_bg }}" alt="" width="1840" height="823">
+  <img class="wm-hero__image wm-hero__jars" src="{{ hero_jars }}" alt="{{ section.settings.image_alt | escape }}" width="2584" height="1376">
+  <a class="wm-button" href="{{ section.settings.button_link | default: routes.all_products_collection_url }}">
+    {{ section.settings.button_label }}
+    <img src="{{ arrow }}" alt="" width="8" height="13">
+  </a>
+</section>
+
+{% schema %}
+{
+  "name": "WayMakers hero",
+  "settings": [
+    { "type": "image_picker", "id": "background", "label": "Background image" },
+    { "type": "image_picker", "id": "foreground", "label": "Jar image" },
+    { "type": "text", "id": "label", "label": "Accessibility label", "default": "WayMakers peanut butter" },
+    { "type": "text", "id": "image_alt", "label": "Image alt", "default": "Nerdy Nuts peanut butter jars" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Shop nu" },
+    { "type": "url", "id": "button_link", "label": "Button link" }
+  ],
+  "presets": [{ "name": "WayMakers hero" }]
+}
+{% endschema %}

@@ -1,0 +1,28 @@
+{{ 'waymakers-home.css' | asset_url | stylesheet_tag }}
+
+<section class="wm-ribbons" aria-label="{{ section.settings.label | escape }}">
+  <div class="wm-ribbon wm-ribbon--yellow">
+    <div class="wm-ribbon__inner">
+      {%- for i in (1..5) -%}
+        <span>Smeer Het</span><span>&#10042;</span><span>Schep Het</span><span>&#127752;</span><span>Mix Het</span><span>&#10033;</span>
+      {%- endfor -%}
+    </div>
+  </div>
+  <div class="wm-ribbon wm-ribbon--pink">
+    <div class="wm-ribbon__inner">
+      {%- for i in (1..5) -%}
+        <span>&#128158;</span><span>Swirl Het</span><span>&#10024;</span><span>Top Het</span><span>&#129348;</span><span>Bak Het</span>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "WayMakers ribbons",
+  "settings": [
+    { "type": "text", "id": "label", "label": "Accessibility label", "default": "Flavor actions" }
+  ],
+  "presets": [{ "name": "WayMakers ribbons" }]
+}
+{% endschema %}

@@ -1,0 +1,108 @@
+{{ 'waymakers-home.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign logo = 'wm-logo-white.svg' | asset_url
+  assign texture = 'wm-texture.png' | asset_url
+  assign arrow = 'wm-arrow.svg' | asset_url
+  if section.settings.logo != blank
+    assign logo = section.settings.logo | image_url: width: 650
+  endif
+  if section.settings.texture != blank
+    assign texture = section.settings.texture | image_url: width: 2200
+  endif
+-%}
+
+<footer class="wm-footer" style="--wm-review-texture: url({{ texture }});" aria-label="Footer">
+  <section class="wm-newsletter" aria-labelledby="wm-newsletter-title-{{ section.id }}">
+    <h2 id="wm-newsletter-title-{{ section.id }}">{{ section.settings.newsletter_heading }}</h2>
+    {%- form 'customer', id: 'WaymakersNewsletter' -%}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      <input type="email" name="contact[email]" autocomplete="email" placeholder="{{ section.settings.newsletter_placeholder }}" aria-label="{{ section.settings.newsletter_placeholder | escape }}" required>
+      <button class="wm-button wm-button--yellow" type="submit">
+        {{ section.settings.newsletter_button_label }}
+        <img src="{{ arrow }}" alt="" width="8" height="13">
+      </button>
+    {%- endform -%}
+  </section>
+
+  <div class="wm-footer__panel">
+    <div class="wm-footer__main">
+      <div class="wm-footer__brand">
+        <img src="{{ logo }}" alt="{{ shop.name | escape }}" width="322" height="54" loading="lazy">
+        <p>{{ section.settings.footer_text }}</p>
+      </div>
+      <div class="wm-footer__columns">
+        <div class="wm-footer__column">
+          <h3>{{ section.settings.footer_menu_heading }}</h3>
+          <div class="wm-footer__links">
+            {%- if section.settings.footer_menu != blank -%}
+              {%- for link in section.settings.footer_menu.links limit: 6 -%}
+                <a href="{{ link.url }}">{{ link.title }}</a>
+              {%- endfor -%}
+            {%- else -%}
+              <a href="{{ routes.root_url }}">Home</a>
+              <a href="/pages/waymakers-effect">WayMakers Effect</a>
+              <a href="{{ routes.collections_url }}">Shop</a>
+              <a href="{{ routes.root_url }}blogs/news">BlogS</a>
+              <a href="/products/gift-card">Cadeaubonnen</a>
+              <a href="/pages/faqs">FAQS</a>
+            {%- endif -%}
+          </div>
+        </div>
+        <div class="wm-footer__column">
+          <h3>{{ section.settings.policy_heading }}</h3>
+          <ul>
+            <li><a href="{{ section.settings.policy_link_1 | default: '/policies/terms-of-service' }}">{{ section.settings.policy_label_1 }}</a></li>
+            <li><a href="{{ section.settings.policy_link_2 | default: '/policies/privacy-policy' }}">{{ section.settings.policy_label_2 }}</a></li>
+          </ul>
+        </div>
+        <div class="wm-footer__column">
+          <h3>{{ section.settings.contact_heading }}</h3>
+          <ul>
+            <li>{{ section.settings.contact_address }}</li>
+            <li><a href="mailto:{{ section.settings.contact_email }}">{{ section.settings.contact_email }}</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="wm-footer__bottom">
+      <div class="wm-footer__copy">{{ section.settings.copyright_text }}</div>
+      <div class="wm-social">
+        <a href="{{ section.settings.instagram_url | default: '#' }}" aria-label="Instagram">{{ 'icon-instagram.svg' | inline_asset_content }}</a>
+        <a href="{{ section.settings.facebook_url | default: '#' }}" aria-label="Facebook">{{ 'icon-facebook.svg' | inline_asset_content }}</a>
+        <a href="{{ section.settings.twitter_url | default: '#' }}" aria-label="Twitter">{{ 'icon-twitter.svg' | inline_asset_content }}</a>
+        <a href="{{ section.settings.pinterest_url | default: '#' }}" aria-label="Pinterest">{{ 'icon-pinterest.svg' | inline_asset_content }}</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "WayMakers footer",
+  "settings": [
+    { "type": "image_picker", "id": "logo", "label": "Logo" },
+    { "type": "image_picker", "id": "texture", "label": "Texture image" },
+    { "type": "text", "id": "newsletter_heading", "label": "Newsletter heading", "default": "Ontvang smaken & updates" },
+    { "type": "text", "id": "newsletter_placeholder", "label": "Email placeholder", "default": "Enter email address" },
+    { "type": "text", "id": "newsletter_button_label", "label": "Newsletter button", "default": "meld je aan" },
+    { "type": "textarea", "id": "footer_text", "label": "Footer text", "default": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium." },
+    { "type": "link_list", "id": "footer_menu", "label": "Footer menu" },
+    { "type": "text", "id": "footer_menu_heading", "label": "Footer menu heading", "default": "Links" },
+    { "type": "text", "id": "policy_heading", "label": "Policy heading", "default": "Beleid" },
+    { "type": "text", "id": "policy_label_1", "label": "Policy label 1", "default": "Algemene voorwaarden" },
+    { "type": "url", "id": "policy_link_1", "label": "Policy link 1" },
+    { "type": "text", "id": "policy_label_2", "label": "Policy label 2", "default": "Privacybeleid" },
+    { "type": "url", "id": "policy_link_2", "label": "Policy link 2" },
+    { "type": "text", "id": "contact_heading", "label": "Contact heading", "default": "Contact Informatie" },
+    { "type": "text", "id": "contact_address", "label": "Address", "default": "Signaal 13 Purmerend, 1446 WT, Nederland" },
+    { "type": "text", "id": "contact_email", "label": "Email", "default": "info@waymakersofficial.com" },
+    { "type": "text", "id": "copyright_text", "label": "Copyright text", "default": "Copyright © 2025 Waymakers, All Rights Reserved. | Designed & Developed by Alian Software." },
+    { "type": "url", "id": "instagram_url", "label": "Instagram URL" },
+    { "type": "url", "id": "facebook_url", "label": "Facebook URL" },
+    { "type": "url", "id": "twitter_url", "label": "Twitter URL" },
+    { "type": "url", "id": "pinterest_url", "label": "Pinterest URL" }
+  ],
+  "presets": [{ "name": "WayMakers footer" }]
+}
+{% endschema %}

@@ -1,0 +1,77 @@
+{{ 'waymakers-home.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign fallback_press_1 = 'wm-press-1.png' | asset_url
+  assign fallback_press_2 = 'wm-press-2.png' | asset_url
+  assign fallback_press_3 = 'wm-press-3.png' | asset_url
+  assign fallback_press_4 = 'wm-press-4.png' | asset_url
+  assign fallback_press_5 = 'wm-press-5.svg' | asset_url
+  assign fallback_press_6 = 'wm-press-6.png' | asset_url
+-%}
+
+<section class="wm-press" aria-label="{{ section.settings.label | escape }}">
+  <div class="wm-press__track">
+    {%- for repeat in (1..2) -%}
+      {%- if section.blocks.size > 0 -%}
+        {%- for block in section.blocks -%}
+          <a class="wm-press__item" href="{{ block.settings.link | default: '#' }}" {{ block.shopify_attributes }}>
+            {%- if block.settings.image != blank -%}
+              <img src="{{ block.settings.image | image_url: width: 360 }}" alt="{{ block.settings.alt | escape }}" loading="lazy" width="180" height="70">
+            {%- else -%}
+              {%- assign fallback = fallback_press_1 -%}
+              {%- case forloop.index -%}
+                {%- when 2 -%}{%- assign fallback = fallback_press_2 -%}
+                {%- when 3 -%}{%- assign fallback = fallback_press_3 -%}
+                {%- when 4 -%}{%- assign fallback = fallback_press_4 -%}
+                {%- when 5 -%}{%- assign fallback = fallback_press_5 -%}
+                {%- when 6 -%}{%- assign fallback = fallback_press_6 -%}
+              {%- endcase -%}
+              <img src="{{ fallback }}" alt="{{ block.settings.alt | escape }}" loading="lazy" width="180" height="70">
+            {%- endif -%}
+          </a>
+        {%- endfor -%}
+      {%- else -%}
+        <span class="wm-press__item"><img src="{{ fallback_press_1 }}" alt="The Hustle" width="180" height="70"></span>
+        <span class="wm-press__item"><img src="{{ fallback_press_2 }}" alt="Fox Business" width="180" height="70"></span>
+        <span class="wm-press__item"><img src="{{ fallback_press_3 }}" alt="Reddit" width="180" height="70"></span>
+        <span class="wm-press__item"><img src="{{ fallback_press_4 }}" alt="Delish" width="180" height="70"></span>
+        <span class="wm-press__item"><img src="{{ fallback_press_5 }}" alt="Forbes" width="180" height="70"></span>
+        <span class="wm-press__item"><img src="{{ fallback_press_6 }}" alt="Nerdy Nuts" width="180" height="70"></span>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "WayMakers press logos",
+  "settings": [
+    { "type": "text", "id": "label", "label": "Accessibility label", "default": "Featured press logos" }
+  ],
+  "blocks": [
+    {
+      "type": "logo",
+      "name": "Logo",
+      "limit": 6,
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "alt", "label": "Alt text", "default": "Press logo" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "WayMakers press logos",
+      "blocks": [
+        { "type": "logo", "settings": { "alt": "The Hustle" } },
+        { "type": "logo", "settings": { "alt": "Fox Business" } },
+        { "type": "logo", "settings": { "alt": "Reddit" } },
+        { "type": "logo", "settings": { "alt": "Delish" } },
+        { "type": "logo", "settings": { "alt": "Forbes" } },
+        { "type": "logo", "settings": { "alt": "Nerdy Nuts" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
