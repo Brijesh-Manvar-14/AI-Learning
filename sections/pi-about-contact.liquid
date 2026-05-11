@@ -1,0 +1,353 @@
+{{ 'pi-about.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign pt = section.settings.padding_top
+  assign pb = section.settings.padding_bottom
+-%}
+
+<section
+  class="pi-section pi-contact"
+  id="pi-contact-{{ section.id }}"
+  style="padding-top: {{ pt }}px; padding-bottom: {{ pb }}px;"
+>
+  <div class="pi-container">
+    <div class="pi-contact__inner">
+
+      {%- comment -%} ── Form Side ─────────────────────────── {%- endcomment -%}
+      <div
+        class="pi-contact__form-side"
+        style="background: {{ section.settings.form_bg_color }};"
+      >
+
+        <div class="pi-contact__heading-block">
+          {%- if section.settings.title != blank -%}
+            <h2
+              class="pi-contact__title"
+              style="color: {{ section.settings.title_color }};"
+            >
+              {{ section.settings.title }}
+            </h2>
+            <div
+              class="pi-contact__title-bar"
+              style="background: {{ section.settings.title_color }};"
+            ></div>
+          {%- endif -%}
+
+          {%- if section.settings.subtitle != blank -%}
+            <p
+              class="pi-contact__subtitle"
+              style="color: {{ section.settings.subtitle_color }};"
+            >
+              {{ section.settings.subtitle }}
+            </p>
+          {%- endif -%}
+        </div>
+
+        {%- form 'contact', id: 'pi-contact-form-{{ section.id }}' -%}
+
+          {%- if form.posted_successfully? -%}
+            <p style="color: green; font-family: var(--pi-font-body); font-size: 16px; margin-bottom: 20px;">
+              {{ 'contact.form.post_success' | t }}
+            </p>
+          {%- endif -%}
+
+          {%- if form.errors -%}
+            <p style="color: red; font-family: var(--pi-font-body); font-size: 14px; margin-bottom: 16px;">
+              {{ form.errors | default_errors }}
+            </p>
+          {%- endif -%}
+
+          <div class="pi-contact__fields">
+
+            {%- comment -%} Row 1: First / Last Name {%- endcomment -%}
+            <div class="pi-contact__row">
+              <input
+                class="pi-contact__field"
+                type="text"
+                name="contact[first_name]"
+                id="pi-first-name-{{ section.id }}"
+                placeholder="{{ section.settings.label_first_name | default: 'First Name*' }}"
+                autocomplete="given-name"
+              >
+              <input
+                class="pi-contact__field"
+                type="text"
+                name="contact[last_name]"
+                id="pi-last-name-{{ section.id }}"
+                placeholder="{{ section.settings.label_last_name | default: 'Last Name*' }}"
+                autocomplete="family-name"
+              >
+            </div>
+
+            {%- comment -%} Row 2: Phone / Email {%- endcomment -%}
+            <div class="pi-contact__row">
+              <input
+                class="pi-contact__field"
+                type="tel"
+                name="contact[phone]"
+                id="pi-phone-{{ section.id }}"
+                placeholder="{{ section.settings.label_phone | default: 'Phone*' }}"
+                autocomplete="tel"
+              >
+              <input
+                class="pi-contact__field"
+                type="email"
+                name="contact[email]"
+                id="pi-email-{{ section.id }}"
+                placeholder="{{ section.settings.label_email | default: 'Email*' }}"
+                required
+                autocomplete="email"
+              >
+            </div>
+
+            {%- comment -%} Studio Dropdown {%- endcomment -%}
+            {%- if section.blocks.size > 0 -%}
+              <select
+                class="pi-contact__field pi-contact__select"
+                name="contact[studio_location]"
+                id="pi-studio-{{ section.id }}"
+                aria-label="{{ section.settings.label_studio | default: 'Select Our Studio Location*' }}"
+              >
+                <option value="" disabled selected>
+                  {{ section.settings.label_studio | default: 'Select Our Studio Location*' }}
+                </option>
+                {%- for block in section.blocks -%}
+                  {%- if block.type == 'studio_option' -%}
+                    <option value="{{ block.settings.value | default: block.settings.label }}">
+                      {{ block.settings.label }}
+                    </option>
+                  {%- endif -%}
+                {%- endfor -%}
+              </select>
+            {%- else -%}
+              <select
+                class="pi-contact__field pi-contact__select"
+                name="contact[studio_location]"
+                id="pi-studio-{{ section.id }}"
+                aria-label="{{ section.settings.label_studio | default: 'Select Our Studio Location*' }}"
+              >
+                <option value="" disabled selected>
+                  {{ section.settings.label_studio | default: 'Select Our Studio Location*' }}
+                </option>
+                <option value="Crete">Crete</option>
+                <option value="Athens">Athens</option>
+                <option value="Antwerp">Antwerp</option>
+                <option value="Amsterdam">Amsterdam</option>
+              </select>
+            {%- endif -%}
+
+            {%- comment -%} Message {%- endcomment -%}
+            <textarea
+              class="pi-contact__field pi-contact__textarea"
+              name="contact[body]"
+              id="pi-message-{{ section.id }}"
+              placeholder="{{ section.settings.label_message | default: 'Message' }}"
+              rows="5"
+            ></textarea>
+
+            {%- comment -%} Submit {%- endcomment -%}
+            <div class="pi-contact__submit-row">
+              <button
+                type="submit"
+                class="pi-btn pi-btn--dark"
+                style="background: {{ section.settings.btn_bg_color }}; color: {{ section.settings.btn_text_color }};"
+              >
+                {{ section.settings.button_label | default: 'Submit' }}
+              </button>
+            </div>
+
+          </div>
+        {%- endform -%}
+
+      </div>
+
+      {%- comment -%} ── Image Side ────────────────────────── {%- endcomment -%}
+      {%- if section.settings.image != blank -%}
+        <div class="pi-contact__image-side">
+          <img
+            src="{{ section.settings.image | image_url: width: 1180 }}"
+            srcset="
+              {{ section.settings.image | image_url: width: 590  }} 590w,
+              {{ section.settings.image | image_url: width: 900  }} 900w,
+              {{ section.settings.image | image_url: width: 1180 }} 1180w
+            "
+            sizes="(max-width: 1200px) 100vw, 590px"
+            alt="{{ section.settings.image.alt | escape }}"
+            loading="lazy"
+            width="590"
+            height="683"
+          >
+          {%- if section.settings.image_overlay_opacity > 0 -%}
+            <div
+              class="pi-contact__image-overlay"
+              style="background: {{ section.settings.image_overlay_color }}; opacity: {{ section.settings.image_overlay_opacity | divided_by: 100.0 }};"
+            ></div>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "PI — Get In Touch",
+  "tag": "section",
+  "settings": [
+    { "type": "header", "content": "Heading" },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Get In Touch"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title colour",
+      "default": "#000000"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle / description",
+      "default": "Fill out the contact form below and we'll get back to you as soon as we can! You can also get in touch via phone or email."
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle colour",
+      "default": "#000000"
+    },
+    { "type": "header", "content": "Form Labels" },
+    {
+      "type": "text",
+      "id": "label_first_name",
+      "label": "First name placeholder",
+      "default": "First Name*"
+    },
+    {
+      "type": "text",
+      "id": "label_last_name",
+      "label": "Last name placeholder",
+      "default": "Last Name*"
+    },
+    {
+      "type": "text",
+      "id": "label_phone",
+      "label": "Phone placeholder",
+      "default": "Phone*"
+    },
+    {
+      "type": "text",
+      "id": "label_email",
+      "label": "Email placeholder",
+      "default": "Email*"
+    },
+    {
+      "type": "text",
+      "id": "label_studio",
+      "label": "Studio dropdown label",
+      "default": "Select Our Studio Location*"
+    },
+    {
+      "type": "text",
+      "id": "label_message",
+      "label": "Message placeholder",
+      "default": "Message"
+    },
+    { "type": "header", "content": "Button" },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Submit button text",
+      "default": "Submit"
+    },
+    {
+      "type": "color",
+      "id": "btn_bg_color",
+      "label": "Button background",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "btn_text_color",
+      "label": "Button text colour",
+      "default": "#ffffff"
+    },
+    { "type": "header", "content": "Form Background" },
+    {
+      "type": "color",
+      "id": "form_bg_color",
+      "label": "Form section background",
+      "default": "#f0f0f0"
+    },
+    { "type": "header", "content": "Side Image" },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Side image"
+    },
+    {
+      "type": "color",
+      "id": "image_overlay_color",
+      "label": "Image overlay colour",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "image_overlay_opacity",
+      "label": "Image overlay opacity",
+      "min": 0, "max": 80, "step": 5, "unit": "%",
+      "default": 20
+    },
+    { "type": "header", "content": "Spacing" },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0, "max": 150, "step": 10, "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0, "max": 150, "step": 10, "unit": "px",
+      "default": 100
+    }
+  ],
+  "blocks": [
+    {
+      "type": "studio_option",
+      "name": "Studio Dropdown Option",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Option label (displayed)",
+          "default": "Crete"
+        },
+        {
+          "type": "text",
+          "id": "value",
+          "label": "Option value (sent with form)",
+          "default": "Crete"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "PI — Get In Touch",
+      "blocks": [
+        { "type": "studio_option", "settings": { "label": "Crete", "value": "Crete" } },
+        { "type": "studio_option", "settings": { "label": "Athens", "value": "Athens" } },
+        { "type": "studio_option", "settings": { "label": "Antwerp", "value": "Antwerp" } },
+        { "type": "studio_option", "settings": { "label": "Amsterdam", "value": "Amsterdam" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

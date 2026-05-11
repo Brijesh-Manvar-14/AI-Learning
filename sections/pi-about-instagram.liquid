@@ -1,0 +1,174 @@
+{{ 'pi-about.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign img_height = section.settings.image_height
+  assign pt = section.settings.padding_top
+  assign pb = section.settings.padding_bottom
+  assign show_hover = section.settings.show_hover_effect
+-%}
+
+<section
+  class="pi-section pi-instagram"
+  id="pi-instagram-{{ section.id }}"
+  style="padding-top: {{ pt }}px; padding-bottom: {{ pb }}px;"
+  aria-label="{{ section.settings.aria_label | default: 'Instagram gallery' }}"
+>
+  <div class="pi-instagram__grid">
+
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'image' -%}
+        <div
+          class="pi-instagram__item"
+          {{ block.shopify_attributes }}
+          style="height: {{ img_height }}px;"
+        >
+          {%- if block.settings.link != blank -%}
+            <a
+              href="{{ block.settings.link }}"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="{{ block.settings.alt | default: 'View on Instagram' | escape }}"
+            >
+          {%- endif -%}
+
+            {%- if block.settings.image != blank -%}
+              <img
+                class="pi-instagram__img"
+                src="{{ block.settings.image | image_url: width: 640 }}"
+                srcset="
+                  {{ block.settings.image | image_url: width: 320 }} 320w,
+                  {{ block.settings.image | image_url: width: 480 }} 480w,
+                  {{ block.settings.image | image_url: width: 640 }} 640w
+                "
+                sizes="(max-width: 480px) 100vw, (max-width: 768px) 50vw, calc(100vw / 6)"
+                alt="{{ block.settings.alt | default: '' | escape }}"
+                loading="lazy"
+                width="320"
+                height="{{ img_height }}"
+              >
+            {%- else -%}
+              {{ 'image' | placeholder_svg_tag: 'pi-instagram__img' }}
+            {%- endif -%}
+
+            {%- if show_hover -%}
+              <div class="pi-instagram__overlay" aria-hidden="true"></div>
+            {%- endif -%}
+
+          {%- if block.settings.link != blank -%}
+            </a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+
+    {%- comment -%} Fallback placeholders {%- endcomment -%}
+    {%- if section.blocks.size == 0 -%}
+      {%- for i in (1..6) -%}
+        <div class="pi-instagram__item" style="height: {{ img_height }}px; background: #e8e8e8;">
+          {{ 'image' | placeholder_svg_tag: 'pi-instagram__img' }}
+        </div>
+      {%- endfor -%}
+    {%- endif -%}
+
+  </div>
+</section>
+
+{%- style -%}
+  #pi-instagram-{{ section.id }} .pi-instagram__item {
+    height: {{ img_height }}px;
+  }
+  @media screen and (max-width: 768px) {
+    #pi-instagram-{{ section.id }} .pi-instagram__item {
+      height: {{ img_height | times: 0.65 | ceil }}px;
+      flex: none;
+      width: 50%;
+    }
+  }
+  @media screen and (max-width: 480px) {
+    #pi-instagram-{{ section.id }} .pi-instagram__item {
+      height: {{ img_height | times: 0.72 | ceil }}px;
+      width: 100%;
+    }
+  }
+{%- endstyle -%}
+
+{% schema %}
+{
+  "name": "PI — Instagram Gallery",
+  "tag": "section",
+  "settings": [
+    { "type": "header", "content": "Layout" },
+    {
+      "type": "range",
+      "id": "image_height",
+      "label": "Image height",
+      "min": 150, "max": 600, "step": 10, "unit": "px",
+      "default": 311
+    },
+    {
+      "type": "checkbox",
+      "id": "show_hover_effect",
+      "label": "Show hover overlay effect",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "aria_label",
+      "label": "Screen reader label",
+      "default": "Instagram gallery"
+    },
+    { "type": "header", "content": "Spacing" },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0, "max": 150, "step": 10, "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0, "max": 150, "step": 10, "unit": "px",
+      "default": 0
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Gallery Image",
+      "limit": 12,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "alt",
+          "label": "Alt text / caption"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link (e.g. Instagram post)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "PI — Instagram Gallery",
+      "blocks": [
+        { "type": "image" },
+        { "type": "image" },
+        { "type": "image" },
+        { "type": "image" },
+        { "type": "image" },
+        { "type": "image" }
+      ]
+    }
+  ]
+}
+{% endschema %}

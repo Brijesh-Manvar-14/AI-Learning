@@ -1,0 +1,242 @@
+{{ 'pi-about.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign pt = section.settings.padding_top
+  assign pb = section.settings.padding_bottom
+  assign title_color    = section.settings.title_color
+  assign question_color = section.settings.question_color
+  assign answer_color   = section.settings.answer_color
+  assign divider_color  = section.settings.divider_color
+-%}
+
+<section
+  class="pi-section pi-faqs"
+  id="pi-faqs-{{ section.id }}"
+  style="padding-top: {{ pt }}px; padding-bottom: {{ pb }}px;"
+>
+
+  {%- if section.settings.title != blank -%}
+    <h2
+      class="pi-faqs__title"
+      style="color: {{ title_color }};"
+    >
+      {{ section.settings.title }}
+    </h2>
+  {%- endif -%}
+
+  <div class="pi-faqs__body">
+    <div class="pi-faqs__list" role="list">
+
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'faq' -%}
+          <details
+            class="pi-faqs__item"
+            {{ block.shopify_attributes }}
+            {%- if forloop.first and section.settings.first_open -%} open{%- endif -%}
+            style="border-bottom-color: {{ divider_color }};"
+            role="listitem"
+          >
+            <summary
+              class="pi-faqs__item"
+              aria-expanded="false"
+            >
+              <span
+                class="pi-faqs__question"
+                style="color: {{ question_color }};"
+              >
+                {{ block.settings.question }}
+              </span>
+              <span class="pi-faqs__icon" aria-hidden="true"></span>
+            </summary>
+
+            {%- if block.settings.answer != blank -%}
+              <p
+                class="pi-faqs__answer"
+                style="color: {{ answer_color }};"
+              >
+                {{ block.settings.answer }}
+              </p>
+            {%- endif -%}
+          </details>
+        {%- endif -%}
+      {%- endfor -%}
+
+      {%- comment -%} Fallback {%- endcomment -%}
+      {%- if section.blocks.size == 0 -%}
+        <details class="pi-faqs__item" open>
+          <summary>
+            <span class="pi-faqs__question" style="color: {{ question_color }};">
+              Is there an age requirement for tattoos and piercings?
+            </span>
+            <span class="pi-faqs__icon" aria-hidden="true"></span>
+          </summary>
+          <p class="pi-faqs__answer" style="color: {{ answer_color }};">
+            Yes, you must be 18+ for tattoos. For piercings, 16+ with parental consent (valid ID required).
+          </p>
+        </details>
+      {%- endif -%}
+
+    </div>
+
+    {%- if section.settings.button_label != blank -%}
+      <a
+        href="{{ section.settings.button_link | default: '#' }}"
+        class="pi-btn pi-btn--dark"
+      >
+        {{ section.settings.button_label }}
+      </a>
+    {%- endif -%}
+  </div>
+</section>
+
+<style>
+  /* Fix: summary inside details — reset nested class */
+  #pi-faqs-{{ section.id }} .pi-faqs__item > summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    cursor: pointer;
+    padding: 20px 0;
+    list-style: none;
+    border-bottom: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  #pi-faqs-{{ section.id }} .pi-faqs__item > summary::-webkit-details-marker { display: none; }
+  #pi-faqs-{{ section.id }} .pi-faqs__item > summary::marker { display: none; }
+</style>
+
+{% schema %}
+{
+  "name": "PI — FAQs",
+  "tag": "section",
+  "settings": [
+    { "type": "header", "content": "Content" },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section title",
+      "default": "FAQs"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title colour",
+      "default": "#000000"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "CTA button label",
+      "default": "View All FAQs"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "CTA button link"
+    },
+    { "type": "header", "content": "Item Styling" },
+    {
+      "type": "color",
+      "id": "question_color",
+      "label": "Question colour",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "answer_color",
+      "label": "Answer colour",
+      "default": "#121212"
+    },
+    {
+      "type": "color",
+      "id": "divider_color",
+      "label": "Divider line colour",
+      "default": "#d0d0d0"
+    },
+    {
+      "type": "checkbox",
+      "id": "first_open",
+      "label": "First item open by default",
+      "default": true
+    },
+    { "type": "header", "content": "Spacing" },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0, "max": 150, "step": 10, "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0, "max": 150, "step": 10, "unit": "px",
+      "default": 100
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq",
+      "name": "FAQ Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "Is there an age requirement for tattoos and piercings?"
+        },
+        {
+          "type": "textarea",
+          "id": "answer",
+          "label": "Answer",
+          "default": "Yes, you must be 18+ for tattoos. For piercings, 16+ with parental consent (valid ID required)."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "PI — FAQs",
+      "blocks": [
+        {
+          "type": "faq",
+          "settings": {
+            "question": "Is there an age requirement for tattoos and piercings?",
+            "answer": "Yes, you must be 18+ for tattoos. For piercings, 16+ with parental consent (valid ID required)."
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "What payment methods do you accept?",
+            "answer": "We accept all major credit cards, cash, and bank transfers. Contact your studio for specific options."
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "What should I do before getting a tattoo?",
+            "answer": "Stay hydrated, eat a full meal beforehand, avoid alcohol for 24 hours, and wear comfortable clothing that provides easy access to the tattoo area."
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "What material do you use for initial piercings?",
+            "answer": "We use implant-grade titanium (ASTM F136) and implant-grade steel for all initial piercings to minimise the risk of allergic reactions."
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "How do I clean and maintain my jewelry?",
+            "answer": "Clean with a mild, fragrance-free soap and warm water daily. Avoid harsh chemicals and over-cleaning to prevent irritation."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

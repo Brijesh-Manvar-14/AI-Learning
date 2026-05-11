@@ -1,0 +1,167 @@
+{{ 'pi-about.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign pt = section.settings.padding_top
+  assign pb = section.settings.padding_bottom
+  assign photo_height = section.settings.photo_height
+  assign title_color = section.settings.title_color
+  assign desc_color  = section.settings.desc_color
+-%}
+
+<section
+  class="pi-section pi-team"
+  id="pi-team-{{ section.id }}"
+  style="padding-top: {{ pt }}px; padding-bottom: {{ pb }}px;"
+>
+  {%- comment -%} ── Header ────────────────────────────────── {%- endcomment -%}
+  <div class="pi-team__header">
+    {%- if section.settings.title != blank -%}
+      <h2 class="pi-team__title" style="color: {{ title_color }};">
+        {{ section.settings.title }}
+      </h2>
+    {%- endif -%}
+
+    {%- if section.settings.description != blank -%}
+      <p class="pi-team__desc" style="color: {{ desc_color }};">
+        {{ section.settings.description }}
+      </p>
+    {%- endif -%}
+  </div>
+
+  {%- comment -%} ── Full-width photo ──────────────────────── {%- endcomment -%}
+  {%- if section.settings.team_photo != blank or section.settings.show_placeholder -%}
+    <div
+      class="pi-team__photo"
+      style="height: {{ photo_height }}px;"
+    >
+      {%- if section.settings.team_photo != blank -%}
+        <img
+          src="{{ section.settings.team_photo | image_url: width: 1920 }}"
+          srcset="
+            {{ section.settings.team_photo | image_url: width: 768  }} 768w,
+            {{ section.settings.team_photo | image_url: width: 1200 }} 1200w,
+            {{ section.settings.team_photo | image_url: width: 1920 }} 1920w
+          "
+          sizes="100vw"
+          alt="{{ section.settings.team_photo.alt | default: section.settings.title | escape }}"
+          loading="lazy"
+          width="1920"
+          height="{{ photo_height }}"
+        >
+      {%- else -%}
+        {{ 'collection-2' | placeholder_svg_tag: 'pi-team__photo--placeholder' }}
+      {%- endif -%}
+
+      {%- if section.settings.photo_overlay_opacity > 0 -%}
+        <div
+          class="pi-team__photo-overlay"
+          style="background: {{ section.settings.photo_overlay_color }}; opacity: {{ section.settings.photo_overlay_opacity | divided_by: 100.0 }};"
+        ></div>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+</section>
+
+{%- style -%}
+  #pi-team-{{ section.id }} .pi-team__photo {
+    height: {{ photo_height }}px;
+  }
+  @media screen and (max-width: 1200px) {
+    #pi-team-{{ section.id }} .pi-team__photo {
+      height: {{ photo_height | times: 0.70 | ceil }}px;
+    }
+  }
+  @media screen and (max-width: 768px) {
+    #pi-team-{{ section.id }} { padding-top: {{ pt | times: 0.6 | ceil }}px; padding-bottom: {{ pb | times: 0.6 | ceil }}px; }
+    #pi-team-{{ section.id }} .pi-team__photo {
+      height: {{ photo_height | times: 0.50 | ceil }}px;
+    }
+  }
+  @media screen and (max-width: 480px) {
+    #pi-team-{{ section.id }} .pi-team__photo {
+      height: {{ photo_height | times: 0.38 | ceil }}px;
+    }
+  }
+{%- endstyle -%}
+
+{% schema %}
+{
+  "name": "PI — Team Section",
+  "tag": "section",
+  "settings": [
+    { "type": "header", "content": "Content" },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "The Puerto Ink Team"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Heading colour",
+      "default": "#000000"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description paragraph",
+      "default": "At Puerto Ink, we are more than a team—we are a family of passionate artists and piercing specialists dedicated to turning visions into reality. With diverse styles, exceptional skill, and years of experience, we create custom tattoos and flawless piercings tailored to each client."
+    },
+    {
+      "type": "color",
+      "id": "desc_color",
+      "label": "Description colour",
+      "default": "#000000"
+    },
+    { "type": "header", "content": "Team Photo" },
+    {
+      "type": "image_picker",
+      "id": "team_photo",
+      "label": "Team photo (full-width)"
+    },
+    {
+      "type": "range",
+      "id": "photo_height",
+      "label": "Photo height (desktop)",
+      "min": 300, "max": 900, "step": 10, "unit": "px",
+      "default": 708
+    },
+    {
+      "type": "color",
+      "id": "photo_overlay_color",
+      "label": "Photo overlay colour",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "photo_overlay_opacity",
+      "label": "Photo overlay opacity",
+      "min": 0, "max": 80, "step": 5, "unit": "%",
+      "default": 0
+    },
+    {
+      "type": "checkbox",
+      "id": "show_placeholder",
+      "label": "Show placeholder if no image",
+      "default": true
+    },
+    { "type": "header", "content": "Spacing" },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0, "max": 150, "step": 10, "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0, "max": 150, "step": 10, "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [{ "name": "PI — Team Section" }]
+}
+{% endschema %}

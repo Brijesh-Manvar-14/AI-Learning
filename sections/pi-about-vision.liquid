@@ -1,0 +1,149 @@
+{{ 'pi-about.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign pt = section.settings.padding_top
+  assign pb = section.settings.padding_bottom
+  assign image_height = section.settings.image_height
+-%}
+
+<section
+  class="pi-section pi-vision"
+  id="pi-vision-{{ section.id }}"
+  style="padding-top: {{ pt }}px; padding-bottom: {{ pb }}px;"
+>
+  <div class="pi-container">
+    <div class="pi-vision__inner">
+
+      {%- comment -%} ── Left: Text Content ──────────────────── {%- endcomment -%}
+      <div class="pi-vision__content">
+
+        {%- if section.settings.section_label != blank -%}
+          <h2
+            class="pi-vision__section-label"
+            style="color: {{ section.settings.label_color }};"
+          >
+            {{ section.settings.section_label }}
+          </h2>
+        {%- endif -%}
+
+        <div class="pi-vision__body">
+
+          {%- if section.settings.subheading != blank -%}
+            <div class="pi-subheading-accented">
+              <h3>{{ section.settings.subheading }}</h3>
+            </div>
+          {%- endif -%}
+
+          {%- if section.settings.text != blank -%}
+            <p class="pi-vision__text">
+              {{ section.settings.text }}
+            </p>
+          {%- endif -%}
+
+        </div>
+      </div>
+
+      {%- comment -%} ── Right: Image ───────────────────────── {%- endcomment -%}
+      <div
+        class="pi-vision__media"
+        style="height: {{ image_height }}px;"
+      >
+        {%- if section.settings.image != blank -%}
+          <img
+            src="{{ section.settings.image | image_url: width: 1480 }}"
+            srcset="
+              {{ section.settings.image | image_url: width: 740  }} 740w,
+              {{ section.settings.image | image_url: width: 1100 }} 1100w,
+              {{ section.settings.image | image_url: width: 1480 }} 1480w
+            "
+            sizes="(max-width: 1200px) 100vw, 740px"
+            alt="{{ section.settings.image.alt | escape }}"
+            loading="lazy"
+            width="740"
+            height="{{ image_height }}"
+          >
+        {%- else -%}
+          {{ 'image' | placeholder_svg_tag }}
+        {%- endif -%}
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{%- style -%}
+  #pi-vision-{{ section.id }} .pi-vision__media {
+    height: {{ image_height }}px;
+  }
+  @media screen and (max-width: 1200px) {
+    #pi-vision-{{ section.id }} .pi-vision__media { height: {{ image_height | times: 0.75 | ceil }}px; }
+  }
+  @media screen and (max-width: 768px) {
+    #pi-vision-{{ section.id }} { padding-top: {{ pt | times: 0.6 | ceil }}px; padding-bottom: {{ pb | times: 0.6 | ceil }}px; }
+    #pi-vision-{{ section.id }} .pi-vision__media { height: {{ image_height | times: 0.55 | ceil }}px; }
+  }
+{%- endstyle -%}
+
+{% schema %}
+{
+  "name": "PI — Vision (Text + Image)",
+  "tag": "section",
+  "settings": [
+    { "type": "header", "content": "Section Label" },
+    {
+      "type": "text",
+      "id": "section_label",
+      "label": "Large heading (left column)",
+      "default": "Our Vision"
+    },
+    {
+      "type": "color",
+      "id": "label_color",
+      "label": "Large heading colour",
+      "default": "#000000"
+    },
+    { "type": "header", "content": "Content" },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Sub-heading (accent bar)",
+      "default": "Redefining Self-Expression Through Artistry"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Body text",
+      "default": "Our vision is to redefine body art by blending creativity, precision, and individuality. We strive to be a global leader in tattoo artistry and piercing craftsmanship, offering a space where self-expression meets innovation."
+    },
+    { "type": "header", "content": "Image" },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Right-side image"
+    },
+    {
+      "type": "range",
+      "id": "image_height",
+      "label": "Image height (desktop)",
+      "min": 300, "max": 750, "step": 10, "unit": "px",
+      "default": 500
+    },
+    { "type": "header", "content": "Spacing" },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0, "max": 150, "step": 10, "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0, "max": 150, "step": 10, "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [{ "name": "PI — Vision (Text + Image)" }]
+}
+{% endschema %}

@@ -1,0 +1,176 @@
+{{ 'pi-about.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign hero_height   = section.settings.height
+  assign title_color   = section.settings.title_color
+  assign title_size    = section.settings.title_size
+  assign bg_color      = section.settings.bg_color
+  assign overlay_alpha = section.settings.overlay_opacity | divided_by: 100.0
+-%}
+
+<section
+  class="pi-section pi-hero"
+  id="pi-hero-{{ section.id }}"
+  aria-label="{{ section.settings.title | escape }}"
+>
+  {%- if section.settings.bg_image != blank -%}
+    <img
+      class="pi-hero__bg"
+      src="{{ section.settings.bg_image | image_url: width: 1920 }}"
+      srcset="
+        {{ section.settings.bg_image | image_url: width: 768  }} 768w,
+        {{ section.settings.bg_image | image_url: width: 1200 }} 1200w,
+        {{ section.settings.bg_image | image_url: width: 1920 }} 1920w
+      "
+      sizes="100vw"
+      alt=""
+      loading="eager"
+      fetchpriority="high"
+      width="1920"
+      height="{{ hero_height }}"
+    >
+    <div
+      class="pi-hero__overlay"
+      style="background: {{ bg_color }}; opacity: {{ overlay_alpha }};"
+    ></div>
+  {%- endif -%}
+
+  {%- if section.settings.show_decor -%}
+    <div class="pi-hero__decor" aria-hidden="true">
+      {%- if section.settings.decor_left != blank -%}
+        <img
+          class="pi-hero__decor-left"
+          src="{{ section.settings.decor_left | image_url: width: 300 }}"
+          alt=""
+          loading="lazy"
+          width="300"
+          height="270"
+        >
+      {%- else -%}
+        {%- comment -%} Inline SVG decorative vectors matching Figma {%- endcomment -%}
+        <svg class="pi-hero__decor-left" viewBox="0 0 220 270" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M-10 185 C20 120 80 40 160 10 C200 -5 230 20 215 70 C200 120 155 170 100 220 C55 260 10 290 -10 260 Z" fill="white" opacity="0.08"/>
+          <path d="M10 170 C40 105 100 28 175 2" stroke="white" stroke-width="1.2" fill="none" opacity="0.35"/>
+          <path d="M35 155 C62 90 118 16 188 -5" stroke="white" stroke-width="1.2" fill="none" opacity="0.25"/>
+          <path d="M60 140 C85 76 136 6 200 -12" stroke="white" stroke-width="1" fill="none" opacity="0.18"/>
+        </svg>
+      {%- endif -%}
+
+      {%- if section.settings.decor_right != blank -%}
+        <img
+          class="pi-hero__decor-right"
+          src="{{ section.settings.decor_right | image_url: width: 300 }}"
+          alt=""
+          loading="lazy"
+          width="300"
+          height="270"
+        >
+      {%- else -%}
+        <svg class="pi-hero__decor-right" viewBox="0 0 220 270" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M230 185 C200 120 140 40 60 10 C20 -5 -10 20 5 70 C20 120 65 170 120 220 C165 260 210 290 230 260 Z" fill="white" opacity="0.08"/>
+          <path d="M210 170 C180 105 120 28 45 2" stroke="white" stroke-width="1.2" fill="none" opacity="0.35"/>
+          <path d="M185 155 C158 90 102 16 32 -5" stroke="white" stroke-width="1.2" fill="none" opacity="0.25"/>
+          <path d="M160 140 C135 76 84 6 20 -12" stroke="white" stroke-width="1" fill="none" opacity="0.18"/>
+        </svg>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+  <h1 class="pi-hero__title">
+    {{- section.settings.title -}}
+  </h1>
+</section>
+
+{%- style -%}
+  #pi-hero-{{ section.id }} {
+    height: {{ hero_height }}px;
+    background-color: {{ bg_color }};
+  }
+  #pi-hero-{{ section.id }} .pi-hero__title {
+    color: {{ title_color }};
+    font-size: {{ title_size }}px;
+    line-height: {{ title_size | times: 1.3 | ceil }}px;
+  }
+  @media screen and (max-width: 768px) {
+    #pi-hero-{{ section.id }} { height: {{ hero_height | times: 0.67 | ceil }}px; }
+    #pi-hero-{{ section.id }} .pi-hero__title { font-size: {{ title_size | times: 0.60 | ceil }}px; }
+  }
+  @media screen and (max-width: 480px) {
+    #pi-hero-{{ section.id }} { height: {{ hero_height | times: 0.55 | ceil }}px; }
+    #pi-hero-{{ section.id }} .pi-hero__title { font-size: {{ title_size | times: 0.50 | ceil }}px; }
+  }
+{%- endstyle -%}
+
+{% schema %}
+{
+  "name": "PI — About Hero",
+  "tag": "section",
+  "settings": [
+    { "type": "header", "content": "Content" },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "About Us"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Heading font size (desktop)",
+      "min": 28, "max": 90, "step": 2, "unit": "px",
+      "default": 54
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Heading colour",
+      "default": "#ffffff"
+    },
+    { "type": "header", "content": "Background" },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background colour",
+      "default": "#000000"
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Background image (optional)"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Image overlay opacity",
+      "min": 0, "max": 100, "step": 5, "unit": "%",
+      "default": 65
+    },
+    { "type": "header", "content": "Layout" },
+    {
+      "type": "range",
+      "id": "height",
+      "label": "Section height (desktop)",
+      "min": 160, "max": 600, "step": 10, "unit": "px",
+      "default": 270
+    },
+    { "type": "header", "content": "Decorative Vectors" },
+    {
+      "type": "checkbox",
+      "id": "show_decor",
+      "label": "Show side decoration",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "decor_left",
+      "label": "Left decor image (overrides SVG)"
+    },
+    {
+      "type": "image_picker",
+      "id": "decor_right",
+      "label": "Right decor image (overrides SVG)"
+    }
+  ],
+  "presets": [{ "name": "PI — About Hero" }]
+}
+{% endschema %}

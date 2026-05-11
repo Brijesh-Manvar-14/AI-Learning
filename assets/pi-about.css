@@ -1,0 +1,1011 @@
+/* ============================================================
+   PUERTO INK — About Page Sections
+   Pixel-perfect from Figma (node 1273:12454)
+   Canvas: 1920px | Inner container: 1500px
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&display=swap');
+
+/* ── Design Tokens ─────────────────────────────────────────── */
+:root {
+  --pi-black:        #000000;
+  --pi-dark:         #121212;
+  --pi-navy:         #172532;
+  --pi-white:        #ffffff;
+  --pi-grey-light:   #f0f0f0;
+  --pi-grey-border:  #808080;
+  --pi-grey-text:    #666666;
+  --pi-grey-muted:   #999999;
+
+  --pi-font-heading: 'Playfair Display', var(--font-heading-family, Georgia, serif);
+  --pi-font-body:    var(--font-body-family, 'Helvetica Neue', Arial, sans-serif);
+
+  /* Figma: 1920px canvas, 210px side padding = 1500px content */
+  --pi-gutter:       210px;
+  --pi-inner:        1500px;
+
+  --pi-gap-section:  100px;
+  --pi-btn-h:        55px;
+  --pi-radius-btn:   8px;
+  --pi-radius-card:  8px;
+}
+
+/* ── Utility / Shared ──────────────────────────────────────── */
+.pi-section {
+  position: relative;
+  width: 100%;
+}
+
+.pi-container {
+  width: 100%;
+  max-width: calc(var(--pi-inner) + var(--pi-gutter) * 2);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--pi-gutter);
+  padding-right: var(--pi-gutter);
+}
+
+/* Reusable button */
+.pi-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--pi-btn-h);
+  padding: 16px 32px;
+  border-radius: var(--pi-radius-btn);
+  font-family: var(--pi-font-body);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 21px;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  border: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.pi-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+.pi-btn--dark  { background: var(--pi-black); color: var(--pi-white); }
+.pi-btn--light { background: var(--pi-white); color: var(--pi-black); }
+.pi-btn--lg    { font-size: 18px; line-height: 23px; }
+
+/* Left-border heading accent (used in Story & Vision) */
+.pi-subheading-accented {
+  border-left: 3px solid var(--pi-black);
+  padding-left: 15px;
+}
+.pi-subheading-accented p,
+.pi-subheading-accented h2,
+.pi-subheading-accented h3 {
+  font-family: var(--pi-font-body);
+  font-size: 34px;
+  font-weight: 500;
+  line-height: 44px;
+  color: var(--pi-black);
+  margin: 0;
+}
+
+
+/* ============================================================
+   1. ABOUT HERO BANNER
+   Figma: height 270px, bg #000, centered title
+   ============================================================ */
+
+.pi-hero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.pi-hero__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+.pi-hero__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.pi-hero__decor {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.pi-hero__decor-left,
+.pi-hero__decor-right {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.3;
+  height: 80%;
+  max-width: 200px;
+}
+.pi-hero__decor-left  { left: 0; }
+.pi-hero__decor-right { right: 0; transform: translateY(-50%) scaleX(-1); }
+
+.pi-hero__title {
+  position: relative;
+  z-index: 3;
+  font-family: var(--pi-font-heading);
+  font-size: 54px;
+  font-weight: 600;
+  line-height: 70px;
+  text-align: center;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+
+/* ============================================================
+   2. BEHIND THE STORY (Image + Text)
+   Figma: 740px image | 50px gap | 710px text
+   ============================================================ */
+
+.pi-story {
+  overflow: hidden;
+}
+
+.pi-story__inner {
+  display: flex;
+  gap: 50px;
+  align-items: center;
+}
+
+.pi-story__media {
+  position: relative;
+  width: 740px;
+  min-width: 740px;
+  border-radius: 0;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: var(--pi-dark);
+}
+
+.pi-story__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pi-story__content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.pi-story__text {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pi-story__text p {
+  font-family: var(--pi-font-body);
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 29px;
+  color: var(--pi-dark);
+  margin: 0;
+}
+
+.pi-story__text strong { font-weight: 700; }
+
+
+/* ============================================================
+   3. TEAM SECTION
+   Figma: centred header → full-width masked photo
+   ============================================================ */
+
+.pi-team {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  align-items: center;
+  overflow: hidden;
+}
+
+.pi-team__header {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  text-align: center;
+  padding-left: var(--pi-gutter);
+  padding-right: var(--pi-gutter);
+  max-width: calc(var(--pi-inner) + var(--pi-gutter) * 2);
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+
+.pi-team__title {
+  font-family: var(--pi-font-heading);
+  font-size: 54px;
+  font-weight: 600;
+  line-height: 70px;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.pi-team__desc {
+  font-family: var(--pi-font-body);
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 29px;
+  margin: 0;
+  max-width: 1120px;
+}
+
+.pi-team__photo {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  line-height: 0;
+}
+
+.pi-team__photo img {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.pi-team__photo-overlay {
+  position: absolute;
+  inset: 0;
+}
+
+
+/* ============================================================
+   4. OUR VISION
+   Figma: 710px text (left) | 50px gap | 740px image (right)
+   ============================================================ */
+
+.pi-vision {
+  overflow: hidden;
+}
+
+.pi-vision__inner {
+  display: flex;
+  gap: 50px;
+  align-items: center;
+}
+
+.pi-vision__content {
+  width: 710px;
+  min-width: 710px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+}
+
+.pi-vision__section-label {
+  font-family: var(--pi-font-heading);
+  font-size: 54px;
+  font-weight: 600;
+  line-height: 70px;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.pi-vision__body {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.pi-vision__text {
+  font-family: var(--pi-font-body);
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 29px;
+  color: var(--pi-dark);
+  margin: 0;
+}
+.pi-vision__text strong { font-weight: 700; }
+
+.pi-vision__media {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  border-radius: var(--pi-radius-card);
+  position: relative;
+}
+
+.pi-vision__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+/* ============================================================
+   5. USPs BANNER
+   Figma: 374px tall | bg image + 75% black overlay | 4 items
+   ============================================================ */
+
+.pi-usps {
+  position: relative;
+  overflow: hidden;
+}
+
+.pi-usps__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+.pi-usps__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.pi-usps__inner {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.pi-usps__grid {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 0;
+}
+
+.pi-usps__item {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
+.pi-usps__icon {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.pi-usps__label {
+  font-family: var(--pi-font-body);
+  font-size: 34px;
+  font-weight: 500;
+  line-height: 44px;
+  text-align: center;
+  text-transform: uppercase;
+  white-space: nowrap;
+  margin: 0;
+}
+
+.pi-usps__divider {
+  width: 1px;
+  flex-shrink: 0;
+  align-self: stretch;
+  background: rgba(255, 255, 255, 0.35);
+}
+
+
+/* ============================================================
+   6. TRUSTED BY THE BEST
+   Figma: 3-col × 2-row grid, each cell 640×489px
+          Col-1 row-1 = text panel
+   ============================================================ */
+
+.pi-trusted {
+  overflow: hidden;
+}
+
+.pi-trusted__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: auto;
+}
+
+.pi-trusted__text-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  text-align: center;
+  position: relative;
+  background: var(--pi-white);
+}
+
+.pi-trusted__section-title {
+  font-family: var(--pi-font-heading);
+  font-size: 54px;
+  font-weight: 600;
+  line-height: 70px;
+  text-transform: uppercase;
+  margin: 0;
+  max-width: 360px;
+}
+
+.pi-trusted__photo-cell {
+  position: relative;
+  overflow: hidden;
+  line-height: 0;
+}
+
+.pi-trusted__photo-cell img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.pi-trusted__photo-cell:hover img {
+  transform: scale(1.04);
+}
+
+
+/* ============================================================
+   7. OUR STUDIOS
+   Figma: 570px tall | dark bg | 4 white card blocks
+          Card: 360×250px, rounded, shadow
+   ============================================================ */
+
+.pi-studios {
+  position: relative;
+  overflow: hidden;
+}
+
+.pi-studios__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+.pi-studios__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.pi-studios__inner {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  align-items: flex-start;
+}
+
+.pi-studios__content {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  width: 100%;
+}
+
+.pi-studios__title {
+  font-family: var(--pi-font-heading);
+  font-size: 54px;
+  font-weight: 600;
+  line-height: 70px;
+  text-transform: uppercase;
+  text-align: center;
+  margin: 0;
+}
+
+.pi-studios__cards {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.pi-studios__card {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+  background: var(--pi-white);
+  border-radius: var(--pi-radius-card);
+  box-shadow: 3px 3px 10px 0 rgba(0, 0, 0, 0.2);
+  width: 360px;
+  height: 250px;
+  overflow: hidden;
+  text-decoration: none;
+  flex-shrink: 0;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.pi-studios__card:hover {
+  transform: translateY(-4px);
+  box-shadow: 3px 8px 18px 0 rgba(0, 0, 0, 0.25);
+}
+
+.pi-studios__card-icon {
+  width: 35px;
+  height: 50px;
+  object-fit: contain;
+}
+
+.pi-studios__card-icon-default {
+  width: 35px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pi-studios__card-name {
+  font-family: var(--pi-font-body);
+  font-size: 34px;
+  font-weight: 500;
+  line-height: 44px;
+  color: var(--pi-black);
+  text-align: center;
+  margin: 0;
+}
+
+
+/* ============================================================
+   8. FAQs
+   Figma: centred title | 1120px list | expand/collapse items
+   ============================================================ */
+
+.pi-faqs {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  align-items: center;
+}
+
+.pi-faqs__title {
+  font-family: var(--pi-font-heading);
+  font-size: 54px;
+  font-weight: 600;
+  line-height: 70px;
+  text-transform: uppercase;
+  text-align: center;
+  margin: 0;
+}
+
+.pi-faqs__body {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  align-items: center;
+  width: 100%;
+}
+
+.pi-faqs__list {
+  width: 1120px;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* Use native <details> for zero-JS accordion */
+.pi-faqs__item {
+  border-bottom: 1px solid #d0d0d0;
+}
+
+.pi-faqs__item summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  cursor: pointer;
+  padding: 20px 0;
+  list-style: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.pi-faqs__item summary::-webkit-details-marker { display: none; }
+
+.pi-faqs__question {
+  font-family: var(--pi-font-body);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 26px;
+  color: var(--pi-black);
+  flex: 1;
+}
+
+.pi-faqs__icon {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.pi-faqs__icon::before,
+.pi-faqs__icon::after {
+  content: '';
+  position: absolute;
+  background: var(--pi-black);
+  border-radius: 2px;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.pi-faqs__icon::before {
+  width: 16px;
+  height: 2px;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+}
+
+.pi-faqs__icon::after {
+  width: 2px;
+  height: 16px;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+}
+
+.pi-faqs__item[open] .pi-faqs__icon::after {
+  opacity: 0;
+  transform: translateX(-50%) rotate(90deg);
+}
+
+.pi-faqs__answer {
+  font-family: var(--pi-font-body);
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 29px;
+  color: var(--pi-dark);
+  padding-bottom: 20px;
+  margin: 0;
+}
+
+
+/* ============================================================
+   9. GET IN TOUCH (Contact Form)
+   Figma: grey form left (~910px) | image right (590px)
+          Total: 1500px inner
+   ============================================================ */
+
+.pi-contact {
+  overflow: hidden;
+}
+
+.pi-contact__inner {
+  display: flex;
+  align-items: stretch;
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.pi-contact__form-side {
+  background: var(--pi-grey-light);
+  padding: 30px;
+  flex: 1;
+  min-width: 0;
+}
+
+.pi-contact__heading-block {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.pi-contact__title {
+  font-family: var(--pi-font-heading);
+  font-size: 44px;
+  font-weight: 600;
+  line-height: 57px;
+  color: var(--pi-black);
+  margin: 0;
+}
+
+.pi-contact__title-bar {
+  width: 50px;
+  height: 3px;
+  background: var(--pi-black);
+}
+
+.pi-contact__subtitle {
+  font-family: var(--pi-font-body);
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 29px;
+  color: var(--pi-black);
+  margin: 0;
+}
+
+.pi-contact__fields {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.pi-contact__row {
+  display: flex;
+  gap: 20px;
+}
+
+.pi-contact__field,
+.pi-contact__select,
+.pi-contact__textarea {
+  width: 100%;
+  height: 55px;
+  padding: 0 20px;
+  background: var(--pi-white);
+  border: 1px solid var(--pi-grey-border);
+  border-radius: var(--pi-radius-btn);
+  font-family: var(--pi-font-body);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 21px;
+  color: var(--pi-dark);
+  outline: none;
+  transition: border-color 0.2s ease;
+  appearance: none;
+  display: flex;
+  align-items: center;
+}
+
+.pi-contact__field:focus,
+.pi-contact__select:focus,
+.pi-contact__textarea:focus {
+  border-color: var(--pi-black);
+}
+
+.pi-contact__field::placeholder,
+.pi-contact__select::placeholder,
+.pi-contact__textarea::placeholder {
+  color: var(--pi-grey-text);
+}
+
+.pi-contact__select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='7' viewBox='0 0 11 7'%3E%3Cpath d='M1 1l4.5 5L10 1' stroke='%23000000' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 18px center;
+  padding-right: 44px;
+  cursor: pointer;
+}
+
+.pi-contact__textarea {
+  height: 150px;
+  padding-top: 15px;
+  resize: none;
+  align-items: flex-start;
+}
+
+.pi-contact__submit-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0;
+}
+
+.pi-contact__image-side {
+  width: 590px;
+  min-width: 590px;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.pi-contact__image-side img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pi-contact__image-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+
+/* ============================================================
+   10. INSTAGRAM GALLERY
+   Figma: 6 images × 320px wide × 311px tall = 1920px
+   ============================================================ */
+
+.pi-instagram {
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+}
+
+.pi-instagram__grid {
+  display: flex;
+  width: 100%;
+}
+
+.pi-instagram__item {
+  flex: 1;
+  min-width: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.pi-instagram__item a {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.pi-instagram__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.pi-instagram__item:hover .pi-instagram__img {
+  transform: scale(1.06);
+}
+
+.pi-instagram__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0);
+  transition: background 0.3s ease;
+  pointer-events: none;
+}
+
+.pi-instagram__item:hover .pi-instagram__overlay {
+  background: rgba(0, 0, 0, 0.25);
+}
+
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+/* ── 1600px ─────────────────────────────────────────────── */
+@media screen and (max-width: 1600px) {
+  :root { --pi-gutter: 160px; }
+
+  .pi-story__media       { width: 600px; min-width: 600px; }
+  .pi-vision__content    { width: 580px; min-width: 580px; }
+}
+
+/* ── 1440px ─────────────────────────────────────────────── */
+@media screen and (max-width: 1440px) {
+  :root { --pi-gutter: 80px; }
+
+  .pi-hero__title        { font-size: 48px; line-height: 62px; }
+  .pi-story__media       { width: 520px; min-width: 520px; }
+  .pi-vision__content    { width: 490px; min-width: 490px; }
+  .pi-faqs__list         { width: 900px; }
+  .pi-contact__image-side { width: 420px; min-width: 420px; }
+  .pi-trusted__section-title { font-size: 44px; line-height: 58px; }
+  .pi-studios__card      { width: calc(25% - 15px); min-width: 260px; }
+}
+
+/* ── 1200px ─────────────────────────────────────────────── */
+@media screen and (max-width: 1200px) {
+  :root { --pi-gutter: 50px; }
+
+  .pi-hero { height: 220px !important; }
+  .pi-hero__title { font-size: 42px; line-height: 56px; }
+
+  /* Story: stack vertically */
+  .pi-story__inner        { flex-direction: column; gap: 40px; }
+  .pi-story__media        { width: 100%; min-width: 0; }
+
+  /* Vision: reverse stack */
+  .pi-vision__inner       { flex-direction: column-reverse; gap: 40px; }
+  .pi-vision__content     { width: 100%; min-width: 0; gap: 30px; }
+  .pi-vision__media       { width: 100%; height: 380px; }
+
+  /* USPs: 2-col wrap */
+  .pi-usps__grid          { flex-wrap: wrap; justify-content: center; gap: 50px 20px; }
+  .pi-usps__item          { width: calc(50% - 30px); min-width: 200px; }
+  .pi-usps__divider       { display: none; }
+
+  /* Trusted: 2-col */
+  .pi-trusted__grid       { grid-template-columns: repeat(2, 1fr); }
+
+  /* Studios */
+  .pi-studios             { height: auto !important; }
+  .pi-studios__inner      { align-items: flex-start; }
+  .pi-studios__cards      { justify-content: center; }
+  .pi-studios__card       { width: calc(50% - 10px); min-width: 200px; height: 200px; }
+
+  /* Contact: stack */
+  .pi-contact__inner      { flex-direction: column; }
+  .pi-contact__image-side { width: 100%; min-width: 0; height: 320px; }
+
+  /* Instagram */
+  .pi-instagram__item     { flex: none; width: calc(100% / 3); }
+}
+
+/* ── 992px ──────────────────────────────────────────────── */
+@media screen and (max-width: 992px) {
+  :root { --pi-gutter: 32px; }
+
+  .pi-usps__item          { width: 100%; }
+  .pi-trusted__grid       { grid-template-columns: 1fr; }
+  .pi-trusted__text-cell  { min-height: 300px; }
+  .pi-trusted__section-title { font-size: 38px; line-height: 52px; }
+  .pi-faqs__list          { width: 100%; }
+  .pi-studios__card       { width: 100%; max-width: 360px; }
+}
+
+/* ── 768px ──────────────────────────────────────────────── */
+@media screen and (max-width: 768px) {
+  :root {
+    --pi-gutter: 24px;
+    --pi-gap-section: 60px;
+  }
+
+  .pi-hero            { height: 180px !important; }
+  .pi-hero__title     { font-size: 32px; line-height: 44px; }
+
+  .pi-team__title,
+  .pi-trusted__section-title,
+  .pi-studios__title,
+  .pi-faqs__title,
+  .pi-vision__section-label { font-size: 36px; line-height: 50px; }
+
+  .pi-subheading-accented p,
+  .pi-subheading-accented h2,
+  .pi-subheading-accented h3,
+  .pi-usps__label,
+  .pi-studios__card-name { font-size: 26px; line-height: 36px; }
+
+  .pi-story__text p,
+  .pi-team__desc,
+  .pi-vision__text,
+  .pi-faqs__answer,
+  .pi-contact__subtitle   { font-size: 16px; line-height: 26px; }
+
+  .pi-contact__title      { font-size: 34px; line-height: 46px; }
+  .pi-contact__row        { flex-direction: column; }
+  .pi-contact__image-side { height: 260px; }
+
+  .pi-instagram__item     { flex: none; width: 50%; }
+  .pi-instagram__item     { height: 200px !important; }
+
+  .pi-btn { height: 48px; font-size: 14px; padding: 12px 24px; }
+}
+
+/* ── 480px ──────────────────────────────────────────────── */
+@media screen and (max-width: 480px) {
+  :root { --pi-gutter: 16px; }
+
+  .pi-hero            { height: 150px !important; }
+  .pi-hero__title     { font-size: 26px; line-height: 36px; }
+
+  .pi-team__title,
+  .pi-trusted__section-title,
+  .pi-studios__title,
+  .pi-faqs__title,
+  .pi-vision__section-label { font-size: 30px; line-height: 42px; }
+
+  .pi-instagram__item     { width: 100%; height: 220px !important; }
+  .pi-studios__card       { width: 100%; max-width: 100%; }
+  .pi-trusted__grid       { grid-template-columns: 1fr; }
+}

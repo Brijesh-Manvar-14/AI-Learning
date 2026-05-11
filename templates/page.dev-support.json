@@ -1,0 +1,262 @@
+{
+  "sections": {
+    "hero": {
+      "type": "pi-about-hero",
+      "settings": {
+        "title": "About Us",
+        "title_size": 54,
+        "title_color": "#ffffff",
+        "bg_color": "#000000",
+        "overlay_opacity": 65,
+        "height": 270,
+        "show_decor": true
+      }
+    },
+    "story": {
+      "type": "pi-about-story",
+      "blocks": {
+        "para1": {
+          "type": "paragraph",
+          "settings": {
+            "text": "<p>Puerto Ink was founded in <strong>2016</strong> by two brothers, <strong>Vangelis and Michalis</strong>, from <strong>Heraklion, Crete</strong>. With a deep passion for art and craftsmanship, they started their journey with a vision to create a <strong>tattoo and piercing studio</strong> that blended creativity, precision, and professionalism.</p>"
+          }
+        },
+        "para2": {
+          "type": "paragraph",
+          "settings": {
+            "text": "<p>What began as a small local studio quickly gained recognition for its high-quality artistry and customer experience. Driven by innovation and dedication, they opened their <strong>first studio in Heraklion</strong>, setting the foundation for what would become a renowned name in the industry.</p>"
+          }
+        },
+        "para3": {
+          "type": "paragraph",
+          "settings": {
+            "text": "<p>In six years, they expanded internationally, opening a studio in <strong>Antwerp, Belgium,</strong> followed by <strong>Amsterdam and Athens</strong>, establishing Puerto Ink as a global brand.</p>"
+          }
+        },
+        "para4": {
+          "type": "paragraph",
+          "settings": {
+            "text": "<p>Today, with a team of <strong>35+ skilled professionals</strong>, Puerto Ink continues to grow, offering <strong>world-class tattoos, piercings, and premium jewelry</strong> while staying true to its artistic roots.</p>"
+          }
+        }
+      },
+      "block_order": ["para1", "para2", "para3", "para4"],
+      "settings": {
+        "subheading": "Behind Puerto Ink",
+        "image_height": 663,
+        "padding_top": 100,
+        "padding_bottom": 0
+      }
+    },
+    "team": {
+      "type": "pi-about-team",
+      "settings": {
+        "title": "The Puerto Ink Team",
+        "title_color": "#000000",
+        "description": "At Puerto Ink, we are more than a team—we are a family of passionate artists and piercing specialists dedicated to turning visions into reality. With diverse styles, exceptional skill, and years of experience, we create custom tattoos and flawless piercings tailored to each client. Rooted in creativity, professionalism, and trust, we foster a welcoming community where artistry thrives, and every visit is a memorable experience.",
+        "desc_color": "#000000",
+        "photo_height": 708,
+        "photo_overlay_opacity": 0,
+        "show_placeholder": true,
+        "padding_top": 100,
+        "padding_bottom": 0
+      }
+    },
+    "vision": {
+      "type": "pi-about-vision",
+      "settings": {
+        "section_label": "Our Vision",
+        "label_color": "#000000",
+        "subheading": "Redefining Self-Expression Through Artistry",
+        "text": "Our vision is to redefine body art by blending creativity, precision, and individuality. We strive to be a global leader in tattoo artistry and piercing craftsmanship, offering a space where self-expression meets innovation. Our commitment to excellence, safety, and client satisfaction drives us to continuously evolve, pushing the boundaries of modern tattooing and piercing. Through our passionate team and welcoming atmosphere, we aim to create meaningful, lasting art while building a community founded on trust and artistry.",
+        "image_height": 500,
+        "padding_top": 100,
+        "padding_bottom": 0
+      }
+    },
+    "usps": {
+      "type": "pi-about-usps",
+      "blocks": {
+        "usp1": {
+          "type": "usp_item",
+          "settings": { "label": "AUTHENTIC" }
+        },
+        "usp2": {
+          "type": "usp_item",
+          "settings": { "label": "PREMIUM" }
+        },
+        "usp3": {
+          "type": "usp_item",
+          "settings": { "label": "INCLUSIVE" }
+        },
+        "usp4": {
+          "type": "usp_item",
+          "settings": { "label": "CREATIVE" }
+        }
+      },
+      "block_order": ["usp1", "usp2", "usp3", "usp4"],
+      "settings": {
+        "bg_fallback_color": "#172532",
+        "overlay_color": "#000000",
+        "overlay_opacity": 75,
+        "label_color": "#ffffff",
+        "divider_color": "#ffffff",
+        "height": 374,
+        "padding_top": 100,
+        "padding_bottom": 0
+      }
+    },
+    "trusted": {
+      "type": "pi-about-trusted",
+      "blocks": {
+        "p1": { "type": "photo", "settings": { "name": "Photo 1" } },
+        "p2": { "type": "photo", "settings": { "name": "Photo 2" } },
+        "p3": { "type": "photo", "settings": { "name": "Photo 3" } },
+        "p4": { "type": "photo", "settings": { "name": "Photo 4" } },
+        "p5": { "type": "photo", "settings": { "name": "Photo 5" } }
+      },
+      "block_order": ["p1", "p2", "p3", "p4", "p5"],
+      "settings": {
+        "title": "Trusted By The Best",
+        "title_color": "#000000",
+        "text_bg_color": "#ffffff",
+        "button_label": "Explore More",
+        "cell_height": 489,
+        "padding_top": 100,
+        "padding_bottom": 0
+      }
+    },
+    "studios": {
+      "type": "pi-about-studios",
+      "blocks": {
+        "s1": { "type": "studio", "settings": { "name": "Crete" } },
+        "s2": { "type": "studio", "settings": { "name": "Athens" } },
+        "s3": { "type": "studio", "settings": { "name": "Antwerp" } },
+        "s4": { "type": "studio", "settings": { "name": "Amsterdam" } }
+      },
+      "block_order": ["s1", "s2", "s3", "s4"],
+      "settings": {
+        "title": "Our Studios",
+        "title_color": "#ffffff",
+        "bg_fallback_color": "#172532",
+        "overlay_color": "#000000",
+        "overlay_opacity": 75,
+        "height": 570,
+        "padding_top": 100
+      }
+    },
+    "faqs": {
+      "type": "pi-about-faqs",
+      "blocks": {
+        "faq1": {
+          "type": "faq",
+          "settings": {
+            "question": "Is there an age requirement for tattoos and piercings?",
+            "answer": "Yes, you must be 18+ for tattoos. For piercings, 16+ with parental consent (valid ID required)."
+          }
+        },
+        "faq2": {
+          "type": "faq",
+          "settings": {
+            "question": "What payment methods do you accept?",
+            "answer": "We accept all major credit cards, cash, and bank transfers. Contact your studio for specific options."
+          }
+        },
+        "faq3": {
+          "type": "faq",
+          "settings": {
+            "question": "What should I do before getting a tattoo?",
+            "answer": "Stay hydrated, eat a full meal beforehand, avoid alcohol for 24 hours, and wear comfortable clothing that provides easy access to the tattoo area."
+          }
+        },
+        "faq4": {
+          "type": "faq",
+          "settings": {
+            "question": "What material do you use for initial piercings?",
+            "answer": "We use implant-grade titanium (ASTM F136) and implant-grade steel for all initial piercings to minimise the risk of allergic reactions."
+          }
+        },
+        "faq5": {
+          "type": "faq",
+          "settings": {
+            "question": "How do I clean and maintain my jewelry?",
+            "answer": "Clean with a mild, fragrance-free soap and warm water daily. Avoid harsh chemicals and over-cleaning to prevent irritation."
+          }
+        }
+      },
+      "block_order": ["faq1", "faq2", "faq3", "faq4", "faq5"],
+      "settings": {
+        "title": "FAQs",
+        "title_color": "#000000",
+        "question_color": "#000000",
+        "answer_color": "#121212",
+        "divider_color": "#d0d0d0",
+        "button_label": "View All FAQs",
+        "first_open": true,
+        "padding_top": 100,
+        "padding_bottom": 100
+      }
+    },
+    "contact": {
+      "type": "pi-about-contact",
+      "blocks": {
+        "opt1": { "type": "studio_option", "settings": { "label": "Crete", "value": "Crete" } },
+        "opt2": { "type": "studio_option", "settings": { "label": "Athens", "value": "Athens" } },
+        "opt3": { "type": "studio_option", "settings": { "label": "Antwerp", "value": "Antwerp" } },
+        "opt4": { "type": "studio_option", "settings": { "label": "Amsterdam", "value": "Amsterdam" } }
+      },
+      "block_order": ["opt1", "opt2", "opt3", "opt4"],
+      "settings": {
+        "title": "Get In Touch",
+        "title_color": "#000000",
+        "subtitle": "Fill out the contact form below and we'll get back to you as soon as we can! You can also get in touch via phone or email.",
+        "subtitle_color": "#000000",
+        "label_first_name": "First Name*",
+        "label_last_name": "Last Name*",
+        "label_phone": "Phone*",
+        "label_email": "Email*",
+        "label_studio": "Select Our Studio Location*",
+        "label_message": "Message",
+        "button_label": "Submit",
+        "btn_bg_color": "#000000",
+        "btn_text_color": "#ffffff",
+        "form_bg_color": "#f0f0f0",
+        "image_overlay_opacity": 20,
+        "image_overlay_color": "#000000",
+        "padding_top": 0,
+        "padding_bottom": 100
+      }
+    },
+    "instagram": {
+      "type": "pi-about-instagram",
+      "blocks": {
+        "img1": { "type": "image", "settings": {} },
+        "img2": { "type": "image", "settings": {} },
+        "img3": { "type": "image", "settings": {} },
+        "img4": { "type": "image", "settings": {} },
+        "img5": { "type": "image", "settings": {} },
+        "img6": { "type": "image", "settings": {} }
+      },
+      "block_order": ["img1", "img2", "img3", "img4", "img5", "img6"],
+      "settings": {
+        "image_height": 311,
+        "show_hover_effect": true,
+        "aria_label": "Instagram gallery",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "story",
+    "team",
+    "vision",
+    "usps",
+    "trusted",
+    "studios",
+    "faqs",
+    "contact",
+    "instagram"
+  ]
+}

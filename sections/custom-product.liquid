@@ -67,9 +67,12 @@
             <a href="/collections/all" class="read-more">Read More</a>
 
           <div class="add-cart-btn">
-          <button class="add-to-cart">
-            Add To Cart - {{ product.price | money }}
-          </button>
+          <button 
+  class="add-to-cart"
+  data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+>
+  Add To Cart - {{ product.price | money }}
+</button>
           </div>
         </div>
         </div>
@@ -105,6 +108,86 @@
           // }
         });
     });
+</script>
+<script>
+$(document).ready(function () {
+
+  $(".add-to-cart").click(function () {
+
+    const button = $(this);
+    const variantId = button.data("variant-id");
+    const originalText = button.html();
+
+    button.prop("disabled", true);
+    button.html("Adding...");
+
+    $.ajax({
+      type: "POST",
+      url: "/cart/add.js",
+      data: {
+        id: variantId,
+        quantity: 1
+      },
+      dataType: "json",
+
+      success: function () {
+
+        button.html("Added ✓");
+
+        /* =========================
+           OPEN CART DRAWER
+        ========================== */
+
+        fetch('/?sections=cart-drawer,cart-icon-bubble')
+          .then(response => response.json())
+          .then((sections) => {
+
+            const cartDrawer = document.querySelector('cart-drawer');
+
+            if (cartDrawer) {
+
+              const drawerInner = cartDrawer.querySelector('#CartDrawer');
+
+              if (drawerInner) {
+                drawerInner.innerHTML = sections['cart-drawer'];
+              }
+
+              const bubble = document.querySelector('#cart-icon-bubble');
+
+              if (bubble && sections['cart-icon-bubble']) {
+                bubble.innerHTML = sections['cart-icon-bubble'];
+              }
+
+              cartDrawer.classList.add('active');
+              document.body.classList.add('overflow-hidden');
+
+            }
+
+          });
+
+        setTimeout(function () {
+          button.prop("disabled", false);
+          button.html(originalText);
+        }, 2000);
+
+      },
+
+      error: function () {
+
+        button.prop("disabled", false);
+        button.html("Error");
+
+        setTimeout(function () {
+          button.html(originalText);
+        }, 2000);
+
+      }
+
+    });
+
+  });
+
+});
 </script>
 {% schema %}
 {

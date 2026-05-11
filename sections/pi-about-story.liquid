@@ -1,0 +1,184 @@
+{{ 'pi-about.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign image_height = section.settings.image_height
+  assign pt = section.settings.padding_top
+  assign pb = section.settings.padding_bottom
+-%}
+
+<section
+  class="pi-section pi-story"
+  id="pi-story-{{ section.id }}"
+  style="padding-top: {{ pt }}px; padding-bottom: {{ pb }}px;"
+>
+  <div class="pi-container">
+    <div class="pi-story__inner">
+
+      {%- comment -%} ── Left: Image ─────────────────────────── {%- endcomment -%}
+      <div
+        class="pi-story__media"
+        style="height: {{ image_height }}px;"
+      >
+        {%- if section.settings.image != blank -%}
+          <img
+            src="{{ section.settings.image | image_url: width: 1480 }}"
+            srcset="
+              {{ section.settings.image | image_url: width: 740  }} 740w,
+              {{ section.settings.image | image_url: width: 1100 }} 1100w,
+              {{ section.settings.image | image_url: width: 1480 }} 1480w
+            "
+            sizes="(max-width: 1200px) 100vw, 740px"
+            alt="{{ section.settings.image.alt | escape }}"
+            loading="lazy"
+            width="740"
+            height="{{ image_height }}"
+          >
+        {%- else -%}
+          {{ 'image' | placeholder_svg_tag: 'pi-story__media--placeholder' }}
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} ── Right: Content ──────────────────────── {%- endcomment -%}
+      <div class="pi-story__content">
+
+        {%- if section.settings.subheading != blank -%}
+          <div class="pi-subheading-accented">
+            <h2>{{ section.settings.subheading }}</h2>
+          </div>
+        {%- endif -%}
+
+        <div class="pi-story__text">
+          {%- for block in section.blocks -%}
+            {%- case block.type -%}
+
+              {%- when 'paragraph' -%}
+                <p {{ block.shopify_attributes }}>
+                  {{ block.settings.text }}
+                </p>
+
+              {%- when 'rich_paragraph' -%}
+                <p {{ block.shopify_attributes }}>
+                  {{ block.settings.text }}
+                </p>
+
+            {%- endcase -%}
+          {%- endfor -%}
+
+          {%- comment -%} Fallback static copy {%- endcomment -%}
+          {%- if section.blocks.size == 0 -%}
+            <p>
+              Puerto Ink was founded in <strong>2016</strong> by two brothers,
+              <strong>Vangelis and Michalis</strong>, from <strong>Heraklion, Crete</strong>.
+              With a deep passion for art and craftsmanship, they started their journey with a vision
+              to create a <strong>tattoo and piercing studio</strong> that blended creativity,
+              precision, and professionalism.
+            </p>
+            <p>
+              What began as a small local studio quickly gained recognition for its high-quality
+              artistry and customer experience. Driven by innovation and dedication, they opened their
+              <strong>first studio in Heraklion</strong>, setting the foundation for what would become
+              a renowned name in the industry.
+            </p>
+            <p>
+              In six years, they expanded internationally, opening a studio in
+              <strong>Antwerp, Belgium,</strong> followed by <strong>Amsterdam and Athens</strong>,
+              establishing Puerto Ink as a global brand.
+            </p>
+            <p>
+              Today, with a team of <strong>35+ skilled professionals</strong>, Puerto Ink continues
+              to grow, offering <strong>world-class tattoos, piercings, and premium jewelry</strong>
+              while staying true to its artistic roots.
+            </p>
+          {%- endif -%}
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+{%- style -%}
+  #pi-story-{{ section.id }} .pi-story__media {
+    height: {{ image_height }}px;
+  }
+  @media screen and (max-width: 1200px) {
+    #pi-story-{{ section.id }} .pi-story__media {
+      height: {{ image_height | times: 0.65 | ceil }}px;
+    }
+  }
+  @media screen and (max-width: 768px) {
+    #pi-story-{{ section.id }} { padding-top: {{ pt | times: 0.6 | ceil }}px; padding-bottom: {{ pb | times: 0.6 | ceil }}px; }
+    #pi-story-{{ section.id }} .pi-story__media {
+      height: {{ image_height | times: 0.50 | ceil }}px;
+    }
+  }
+{%- endstyle -%}
+
+{% schema %}
+{
+  "name": "PI — Story (Image + Text)",
+  "tag": "section",
+  "settings": [
+    { "type": "header", "content": "Content" },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Sub-heading (left-accent)",
+      "default": "Behind Puerto Ink"
+    },
+    { "type": "header", "content": "Image" },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Section image"
+    },
+    {
+      "type": "range",
+      "id": "image_height",
+      "label": "Image height (desktop)",
+      "min": 300, "max": 800, "step": 10, "unit": "px",
+      "default": 663
+    },
+    { "type": "header", "content": "Spacing" },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0, "max": 150, "step": 10, "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0, "max": 150, "step": 10, "unit": "px",
+      "default": 0
+    }
+  ],
+  "blocks": [
+    {
+      "type": "paragraph",
+      "name": "Paragraph",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Add your paragraph text here. Use <strong>bold text</strong> for emphasis.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "PI — Story (Image + Text)",
+      "blocks": [
+        { "type": "paragraph" },
+        { "type": "paragraph" },
+        { "type": "paragraph" },
+        { "type": "paragraph" }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,210 @@
+{{ 'pi-about.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign pt = section.settings.padding_top
+  assign pb = section.settings.padding_bottom
+  assign cell_h = section.settings.cell_height
+  assign text_bg = section.settings.text_bg_color
+  assign title_color = section.settings.title_color
+  assign btn_label = section.settings.button_label
+  assign btn_link  = section.settings.button_link
+-%}
+
+<section
+  class="pi-section pi-trusted"
+  id="pi-trusted-{{ section.id }}"
+  style="padding-top: {{ pt }}px; padding-bottom: {{ pb }}px;"
+>
+  <div class="pi-trusted__grid">
+
+    {%- comment -%}
+      Grid layout (3 cols × 2 rows):
+      [Text panel] [Photo 1] [Photo 2]
+      [Photo 3]    [Photo 4] [Photo 5]
+      Photo blocks = all blocks of type "photo"
+    {%- endcomment -%}
+
+    {%- assign photo_blocks = section.blocks | where: 'type', 'photo' -%}
+
+    {%- comment -%} Cell 1: Text panel (row 1, col 1) {%- endcomment -%}
+    <div
+      class="pi-trusted__text-cell"
+      style="
+        background: {{ text_bg }};
+        min-height: {{ cell_h }}px;
+      "
+    >
+      {%- if section.settings.title != blank -%}
+        <h2
+          class="pi-trusted__section-title"
+          style="color: {{ title_color }};"
+        >
+          {{ section.settings.title }}
+        </h2>
+      {%- endif -%}
+
+      {%- if btn_label != blank -%}
+        <a
+          href="{{ btn_link | default: '#' }}"
+          class="pi-btn pi-btn--dark"
+        >
+          {{ btn_label }}
+        </a>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} Photos (up to 5 displayed in grid cells 2–6) {%- endcomment -%}
+    {%- for block in photo_blocks limit: 5 -%}
+      <div
+        class="pi-trusted__photo-cell"
+        style="min-height: {{ cell_h }}px;"
+        {{ block.shopify_attributes }}
+      >
+        {%- if block.settings.image != blank -%}
+          <img
+            src="{{ block.settings.image | image_url: width: 1280 }}"
+            srcset="
+              {{ block.settings.image | image_url: width: 640  }} 640w,
+              {{ block.settings.image | image_url: width: 900  }} 900w,
+              {{ block.settings.image | image_url: width: 1280 }} 1280w
+            "
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            alt="{{ block.settings.image.alt | default: block.settings.name | escape }}"
+            loading="lazy"
+            width="640"
+            height="{{ cell_h }}"
+          >
+        {%- else -%}
+          {{ 'image' | placeholder_svg_tag }}
+        {%- endif -%}
+      </div>
+    {%- endfor -%}
+
+    {%- comment -%} Fallback if no blocks {%- endcomment -%}
+    {%- if photo_blocks.size == 0 -%}
+      {%- for i in (1..5) -%}
+        <div class="pi-trusted__photo-cell" style="min-height: {{ cell_h }}px; background: #e0e0e0;">
+          {{ 'image' | placeholder_svg_tag }}
+        </div>
+      {%- endfor -%}
+    {%- endif -%}
+
+  </div>
+</section>
+
+{%- style -%}
+  #pi-trusted-{{ section.id }} .pi-trusted__text-cell,
+  #pi-trusted-{{ section.id }} .pi-trusted__photo-cell {
+    min-height: {{ cell_h }}px;
+  }
+  @media screen and (max-width: 1440px) {
+    #pi-trusted-{{ section.id }} .pi-trusted__text-cell,
+    #pi-trusted-{{ section.id }} .pi-trusted__photo-cell {
+      min-height: {{ cell_h | times: 0.82 | ceil }}px;
+    }
+  }
+  @media screen and (max-width: 1200px) {
+    #pi-trusted-{{ section.id }} .pi-trusted__photo-cell {
+      min-height: {{ cell_h | times: 0.72 | ceil }}px;
+    }
+  }
+  @media screen and (max-width: 768px) {
+    #pi-trusted-{{ section.id }} .pi-trusted__photo-cell {
+      min-height: {{ cell_h | times: 0.58 | ceil }}px;
+    }
+  }
+{%- endstyle -%}
+
+{% schema %}
+{
+  "name": "PI — Trusted By The Best",
+  "tag": "section",
+  "settings": [
+    { "type": "header", "content": "Text Panel" },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Trusted By The Best"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title colour",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "text_bg_color",
+      "label": "Text panel background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Explore More"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    { "type": "header", "content": "Layout" },
+    {
+      "type": "range",
+      "id": "cell_height",
+      "label": "Grid cell height (desktop)",
+      "min": 250, "max": 650, "step": 10, "unit": "px",
+      "default": 489
+    },
+    { "type": "header", "content": "Spacing" },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0, "max": 150, "step": 10, "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0, "max": 150, "step": 10, "unit": "px",
+      "default": 0
+    }
+  ],
+  "blocks": [
+    {
+      "type": "photo",
+      "name": "Photo",
+      "limit": 5,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Photo"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Person / caption",
+          "info": "Used as alt text for accessibility"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "PI — Trusted By The Best",
+      "blocks": [
+        { "type": "photo", "settings": { "name": "Photo 1" } },
+        { "type": "photo", "settings": { "name": "Photo 2" } },
+        { "type": "photo", "settings": { "name": "Photo 3" } },
+        { "type": "photo", "settings": { "name": "Photo 4" } },
+        { "type": "photo", "settings": { "name": "Photo 5" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

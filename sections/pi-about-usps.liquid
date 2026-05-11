@@ -1,0 +1,239 @@
+{{ 'pi-about.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign section_height    = section.settings.height
+  assign overlay_alpha     = section.settings.overlay_opacity | divided_by: 100.0
+  assign overlay_color     = section.settings.overlay_color
+  assign label_color       = section.settings.label_color
+  assign divider_color     = section.settings.divider_color
+  assign pt = section.settings.padding_top
+  assign pb = section.settings.padding_bottom
+-%}
+
+<section
+  class="pi-section pi-usps"
+  id="pi-usps-{{ section.id }}"
+  style="
+    padding-top: {{ pt }}px;
+    padding-bottom: {{ pb }}px;
+    {%- if section.settings.bg_image == blank -%}background-color: {{ section.settings.bg_fallback_color }};{%- endif -%}
+  "
+>
+  {%- if section.settings.bg_image != blank -%}
+    <img
+      class="pi-usps__bg"
+      src="{{ section.settings.bg_image | image_url: width: 1920 }}"
+      srcset="
+        {{ section.settings.bg_image | image_url: width: 768  }} 768w,
+        {{ section.settings.bg_image | image_url: width: 1200 }} 1200w,
+        {{ section.settings.bg_image | image_url: width: 1920 }} 1920w
+      "
+      sizes="100vw"
+      alt=""
+      loading="lazy"
+      width="1920"
+      height="{{ section_height }}"
+    >
+  {%- endif -%}
+
+  <div
+    class="pi-usps__overlay"
+    style="background: {{ overlay_color }}; opacity: {{ overlay_alpha }};"
+  ></div>
+
+  <div class="pi-usps__inner pi-container">
+    <div class="pi-usps__grid">
+
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'usp_item' -%}
+
+          {%- unless forloop.first -%}
+            <div
+              class="pi-usps__divider"
+              aria-hidden="true"
+              style="background: {{ divider_color }};"
+            ></div>
+          {%- endunless -%}
+
+          <div class="pi-usps__item" {{ block.shopify_attributes }}>
+            {%- if block.settings.icon != blank -%}
+              <img
+                class="pi-usps__icon"
+                src="{{ block.settings.icon | image_url: width: 200 }}"
+                alt="{{ block.settings.icon.alt | default: block.settings.label | escape }}"
+                loading="lazy"
+                width="100"
+                height="100"
+              >
+            {%- elsif block.settings.icon_svg != blank -%}
+              <div
+                class="pi-usps__icon"
+                style="width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;"
+                aria-hidden="true"
+              >
+                {{ block.settings.icon_svg }}
+              </div>
+            {%- else -%}
+              {%- comment -%} Default placeholder circle {%- endcomment -%}
+              <svg class="pi-usps__icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <circle cx="50" cy="50" r="40" stroke="white" stroke-width="2"/>
+                <circle cx="50" cy="50" r="20" stroke="white" stroke-width="2"/>
+              </svg>
+            {%- endif -%}
+
+            {%- if block.settings.label != blank -%}
+              <p
+                class="pi-usps__label"
+                style="color: {{ label_color }};"
+              >
+                {{ block.settings.label }}
+              </p>
+            {%- endif -%}
+          </div>
+
+        {%- endif -%}
+      {%- endfor -%}
+
+      {%- comment -%} Fallback when no blocks configured {%- endcomment -%}
+      {%- if section.blocks.size == 0 -%}
+        {%- assign fallback_items = 'AUTHENTIC,PREMIUM,INCLUSIVE,CREATIVE' | split: ',' -%}
+        {%- for item in fallback_items -%}
+          {%- unless forloop.first -%}
+            <div class="pi-usps__divider" aria-hidden="true" style="background: {{ divider_color }};"></div>
+          {%- endunless -%}
+          <div class="pi-usps__item">
+            <svg class="pi-usps__icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <circle cx="50" cy="50" r="40" stroke="white" stroke-width="2"/>
+            </svg>
+            <p class="pi-usps__label" style="color: {{ label_color }};">{{ item }}</p>
+          </div>
+        {%- endfor -%}
+      {%- endif -%}
+
+    </div>
+  </div>
+</section>
+
+{%- style -%}
+  #pi-usps-{{ section.id }} {
+    {%- if section.settings.padding_top == 0 and section.settings.padding_bottom == 0 -%}
+    min-height: {{ section_height }}px;
+    {%- endif -%}
+  }
+  #pi-usps-{{ section.id }} .pi-usps__inner {
+    min-height: {{ section_height }}px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+  @media screen and (max-width: 768px) {
+    #pi-usps-{{ section.id }} .pi-usps__inner {
+      min-height: auto;
+      padding-top: 50px;
+      padding-bottom: 50px;
+    }
+  }
+{%- endstyle -%}
+
+{% schema %}
+{
+  "name": "PI — USPs Banner",
+  "tag": "section",
+  "settings": [
+    { "type": "header", "content": "Background" },
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Background image"
+    },
+    {
+      "type": "color",
+      "id": "bg_fallback_color",
+      "label": "Background colour (no image)",
+      "default": "#172532"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay colour",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay opacity",
+      "min": 0, "max": 100, "step": 5, "unit": "%",
+      "default": 75
+    },
+    { "type": "header", "content": "Style" },
+    {
+      "type": "color",
+      "id": "label_color",
+      "label": "Label text colour",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "divider_color",
+      "label": "Divider colour",
+      "default": "rgba(255,255,255,0.35)"
+    },
+    { "type": "header", "content": "Layout" },
+    {
+      "type": "range",
+      "id": "height",
+      "label": "Min-height (desktop)",
+      "min": 200, "max": 600, "step": 10, "unit": "px",
+      "default": 374
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Extra padding top",
+      "min": 0, "max": 100, "step": 10, "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Extra padding bottom",
+      "min": 0, "max": 100, "step": 10, "unit": "px",
+      "default": 0
+    }
+  ],
+  "blocks": [
+    {
+      "type": "usp_item",
+      "name": "USP Item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon image (100×100)"
+        },
+        {
+          "type": "html",
+          "id": "icon_svg",
+          "label": "Icon SVG (alternative to image)"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label text",
+          "default": "AUTHENTIC"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "PI — USPs Banner",
+      "blocks": [
+        { "type": "usp_item", "settings": { "label": "AUTHENTIC" } },
+        { "type": "usp_item", "settings": { "label": "PREMIUM" } },
+        { "type": "usp_item", "settings": { "label": "INCLUSIVE" } },
+        { "type": "usp_item", "settings": { "label": "CREATIVE" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

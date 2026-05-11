@@ -1,0 +1,236 @@
+{{ 'pi-about.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign section_height  = section.settings.height
+  assign overlay_alpha   = section.settings.overlay_opacity | divided_by: 100.0
+  assign overlay_color   = section.settings.overlay_color
+  assign title_color     = section.settings.title_color
+  assign pt = section.settings.padding_top
+-%}
+
+<section
+  class="pi-section pi-studios"
+  id="pi-studios-{{ section.id }}"
+>
+  {%- if section.settings.bg_image != blank -%}
+    <img
+      class="pi-studios__bg"
+      src="{{ section.settings.bg_image | image_url: width: 1920 }}"
+      srcset="
+        {{ section.settings.bg_image | image_url: width: 768  }} 768w,
+        {{ section.settings.bg_image | image_url: width: 1200 }} 1200w,
+        {{ section.settings.bg_image | image_url: width: 1920 }} 1920w
+      "
+      sizes="100vw"
+      alt=""
+      loading="lazy"
+      width="1920"
+      height="{{ section_height }}"
+    >
+  {%- endif -%}
+
+  <div
+    class="pi-studios__overlay"
+    style="background: {{ overlay_color }}; opacity: {{ overlay_alpha }};"
+  ></div>
+
+  <div class="pi-studios__inner pi-container">
+    <div class="pi-studios__content">
+
+      {%- if section.settings.title != blank -%}
+        <h2
+          class="pi-studios__title"
+          style="color: {{ title_color }};"
+        >
+          {{ section.settings.title }}
+        </h2>
+      {%- endif -%}
+
+      <div class="pi-studios__cards">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'studio' -%}
+            <a
+              href="{{ block.settings.link | default: '#' }}"
+              class="pi-studios__card"
+              {{ block.shopify_attributes }}
+              {%- if block.settings.link == blank -%} role="presentation" tabindex="-1"{%- endif -%}
+            >
+              {%- if block.settings.icon != blank -%}
+                <img
+                  class="pi-studios__card-icon"
+                  src="{{ block.settings.icon | image_url: width: 70 }}"
+                  alt=""
+                  loading="lazy"
+                  width="35"
+                  height="50"
+                >
+              {%- else -%}
+                {%- comment -%} Inline pin icon matching Figma {%- endcomment -%}
+                <svg
+                  class="pi-studios__card-icon"
+                  viewBox="0 0 35 50"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
+                  width="35"
+                  height="50"
+                >
+                  <path
+                    d="M17.5 0C9.22 0 2.5 6.72 2.5 15c0 10.73 15 35 15 35s15-24.27 15-35C32.5 6.72 25.78 0 17.5 0Zm0 20.5a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11Z"
+                    fill="#000000"
+                  />
+                </svg>
+              {%- endif -%}
+
+              <p
+                class="pi-studios__card-name"
+                style="color: {{ block.settings.name_color | default: '#000000' }};"
+              >
+                {{ block.settings.name }}
+              </p>
+            </a>
+          {%- endif -%}
+        {%- endfor -%}
+
+        {%- comment -%} Fallback {%- endcomment -%}
+        {%- if section.blocks.size == 0 -%}
+          {%- assign cities = 'Crete,Athens,Antwerp,Amsterdam' | split: ',' -%}
+          {%- for city in cities -%}
+            <div class="pi-studios__card">
+              <svg class="pi-studios__card-icon" viewBox="0 0 35 50" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" width="35" height="50">
+                <path d="M17.5 0C9.22 0 2.5 6.72 2.5 15c0 10.73 15 35 15 35s15-24.27 15-35C32.5 6.72 25.78 0 17.5 0Zm0 20.5a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11Z" fill="#000"/>
+              </svg>
+              <p class="pi-studios__card-name">{{ city }}</p>
+            </div>
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{%- style -%}
+  #pi-studios-{{ section.id }} {
+    background-color: {{ section.settings.bg_fallback_color }};
+  }
+  #pi-studios-{{ section.id }} .pi-studios__inner {
+    min-height: {{ section_height }}px;
+    padding-top: {{ pt }}px;
+    padding-bottom: {{ pt }}px;
+  }
+  @media screen and (max-width: 1200px) {
+    #pi-studios-{{ section.id }} .pi-studios__inner {
+      min-height: auto;
+    }
+  }
+  @media screen and (max-width: 768px) {
+    #pi-studios-{{ section.id }} .pi-studios__inner {
+      padding-top: {{ pt | times: 0.6 | ceil }}px;
+      padding-bottom: {{ pt | times: 0.6 | ceil }}px;
+    }
+  }
+{%- endstyle -%}
+
+{% schema %}
+{
+  "name": "PI — Our Studios",
+  "tag": "section",
+  "settings": [
+    { "type": "header", "content": "Content" },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section title",
+      "default": "Our Studios"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title colour",
+      "default": "#ffffff"
+    },
+    { "type": "header", "content": "Background" },
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Background image"
+    },
+    {
+      "type": "color",
+      "id": "bg_fallback_color",
+      "label": "Background fallback colour",
+      "default": "#172532"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay colour",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay opacity",
+      "min": 0, "max": 100, "step": 5, "unit": "%",
+      "default": 75
+    },
+    { "type": "header", "content": "Layout" },
+    {
+      "type": "range",
+      "id": "height",
+      "label": "Section min-height (desktop)",
+      "min": 300, "max": 800, "step": 10, "unit": "px",
+      "default": 570
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Inner content top spacing",
+      "min": 40, "max": 200, "step": 10, "unit": "px",
+      "default": 100
+    }
+  ],
+  "blocks": [
+    {
+      "type": "studio",
+      "name": "Studio Location",
+      "settings": [
+        {
+          "type": "text",
+          "id": "name",
+          "label": "City / Location name",
+          "default": "Crete"
+        },
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Pin icon (overrides default SVG)"
+        },
+        {
+          "type": "color",
+          "id": "name_color",
+          "label": "City name colour",
+          "default": "#000000"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link (optional)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "PI — Our Studios",
+      "blocks": [
+        { "type": "studio", "settings": { "name": "Crete" } },
+        { "type": "studio", "settings": { "name": "Athens" } },
+        { "type": "studio", "settings": { "name": "Antwerp" } },
+        { "type": "studio", "settings": { "name": "Amsterdam" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
