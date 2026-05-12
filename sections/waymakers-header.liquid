@@ -17,15 +17,15 @@
 -%}
 
 {%- if section.settings.show_announcement -%}
-  <div class="wm-page">
+  <div class="wm-page wm-announcement-wrap">
     <div class="wm-announcement">{{ section.settings.announcement_text }}</div>
   </div>
 {%- endif -%}
 
 <header class="wm-header" aria-label="{{ shop.name | escape }}">
-  <button class="wm-menu-toggle" type="button" aria-label="{{ 'sections.header.menu' | t }}"><span></span></button>
+  <button class="wm-menu-toggle" type="button" aria-label="{{ 'sections.header.menu' | t }}" aria-expanded="false" aria-controls="WaymakersMenu-{{ section.id }}" data-wm-menu-toggle><span></span></button>
 
-  <nav class="wm-nav" aria-label="Primary">
+  <nav class="wm-nav" id="WaymakersMenu-{{ section.id }}" aria-label="Primary">
     {%- if section.settings.menu != blank -%}
       {%- for link in section.settings.menu.links limit: 5 -%}
         <a href="{{ link.url }}">{{ link.title }}</a>
@@ -50,9 +50,12 @@
     <a class="wm-icon-link" href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" aria-label="{{ 'customer.account.title' | t }}">
       <img src="{{ account_icon }}" alt="" width="22" height="22">
     </a>
-    <a class="wm-icon-link wm-cart" href="{{ routes.cart_url }}" aria-label="{{ 'templates.cart.cart' | t }}">
+    <a class="wm-icon-link wm-cart" href="{{ routes.cart_url }}" aria-label="{{ 'templates.cart.cart' | t }}" data-wm-cart-link>
       <img src="{{ cart_icon }}" alt="" width="22" height="22">
-      <span class="wm-cart-count"><img src="{{ cart_badge }}" alt="" width="17" height="17"><span>{{ cart.item_count }}</span></span>
+      <span class="wm-cart-count" data-wm-cart-count aria-hidden="{% if cart.item_count == 0 %}true{% else %}false{% endif %}">
+        <img src="{{ cart_badge }}" alt="" width="17" height="17">
+        <span>{{ cart.item_count }}</span>
+      </span>
     </a>
     <a class="wm-button" href="{{ section.settings.button_link | default: routes.all_products_collection_url }}">
       {{ section.settings.button_label }}
@@ -61,9 +64,14 @@
   </div>
 </header>
 
+<script src="{{ 'waymakers-home.js' | asset_url }}" defer="defer"></script>
+
 {% schema %}
 {
   "name": "WayMakers header",
+  "enabled_on": {
+    "groups": ["header"]
+  },
   "settings": [
     { "type": "checkbox", "id": "show_announcement", "label": "Show announcement", "default": true },
     { "type": "text", "id": "announcement_text", "label": "Announcement text", "default": "Get 20% off on your first purchase! Use code WELCOME20 at checkout." },

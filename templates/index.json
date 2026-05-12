@@ -9,23 +9,15 @@
  */
 {
   "sections": {
-    "waymakers_header": {
-      "type": "waymakers-header",
-      "settings": {
-        "show_announcement": true,
-        "announcement_text": "Get 20% off on your first purchase! Use code WELCOME20 at checkout.",
-        "menu": "",
-        "button_label": "Bestel nu",
-        "button_link": ""
-      }
-    },
     "waymakers_hero": {
       "type": "waymakers-hero",
       "settings": {
         "label": "WayMakers peanut butter",
         "image_alt": "Nerdy Nuts peanut butter jars",
         "button_label": "Shop nu",
-        "button_link": ""
+        "button_link": "",
+        "padding_top": 0,
+        "padding_bottom": 0
       }
     },
     "waymakers_press": {
@@ -124,8 +116,11 @@
         "heading": "Best Sellers ✨",
         "collection": "anti-ageing",
         "products_to_show": 4,
+        "show_view_all": true,
         "button_label": "Alle Producten",
-        "button_link": ""
+        "button_link": "",
+        "padding_top": 0,
+        "padding_bottom": 0
       }
     },
     "waymakers_ribbons": {
@@ -195,7 +190,9 @@
         "review_y7Rpnd"
       ],
       "settings": {
-        "heading": "Geproefd, getest & Geliefd!"
+        "heading": "Geproefd, getest & Geliefd!",
+        "padding_top": 100,
+        "padding_bottom": 100
       }
     },
     "waymakers_why": {
@@ -206,40 +203,14 @@
         "button_label": "Lees Meer",
         "button_link": ""
       }
-    },
-    "waymakers_footer": {
-      "type": "waymakers-footer",
-      "settings": {
-        "newsletter_heading": "Ontvang smaken & updates",
-        "newsletter_placeholder": "Enter email address",
-        "newsletter_button_label": "meld je aan",
-        "footer_text": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium.",
-        "footer_menu": "",
-        "footer_menu_heading": "Links",
-        "policy_heading": "Beleid",
-        "policy_label_1": "Algemene voorwaarden",
-        "policy_link_1": "",
-        "policy_label_2": "Privacybeleid",
-        "policy_link_2": "",
-        "contact_heading": "Contact Informatie",
-        "contact_address": "Signaal 13 Purmerend, 1446 WT, Nederland",
-        "contact_email": "info@waymakersofficial.com",
-        "copyright_text": "Copyright © 2025 Waymakers, All Rights Reserved. | Designed & Developed by Alian Software.",
-        "instagram_url": "",
-        "facebook_url": "",
-        "twitter_url": "",
-        "pinterest_url": ""
-      }
     }
   },
   "order": [
-    "waymakers_header",
     "waymakers_hero",
     "waymakers_press",
     "waymakers_products",
     "waymakers_ribbons",
     "waymakers_reviews",
-    "waymakers_why",
-    "waymakers_footer"
+    "waymakers_why"
   ]
 }

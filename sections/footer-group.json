@@ -11,25 +11,32 @@
   "name": "t:sections.footer.name",
   "type": "footer",
   "sections": {
-    "footer": {
-      "type": "footer",
+    "waymakers_footer": {
+      "type": "waymakers-footer",
       "settings": {
-        "color_scheme": "scheme-1",
-        "newsletter_enable": true,
-        "newsletter_heading": "Subscribe to our emails",
-        "enable_follow_on_shop": true,
-        "show_social": true,
-        "enable_country_selector": true,
-        "enable_language_selector": true,
-        "payment_enable": true,
-        "show_policy": true,
-        "margin_top": 0,
-        "padding_top": 36,
-        "padding_bottom": 36
+        "newsletter_heading": "Ontvang smaken & updates",
+        "newsletter_placeholder": "Enter email address",
+        "newsletter_button_label": "meld je aan",
+        "footer_text": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium.",
+        "footer_menu": "",
+        "footer_menu_heading": "Links",
+        "policy_heading": "Beleid",
+        "policy_label_1": "Algemene voorwaarden",
+        "policy_link_1": "",
+        "policy_label_2": "Privacybeleid",
+        "policy_link_2": "",
+        "contact_heading": "Contact Informatie",
+        "contact_address": "Signaal 13 Purmerend, 1446 WT, Nederland",
+        "contact_email": "info@waymakersofficial.com",
+        "copyright_text": "Copyright © 2025 Waymakers, All Rights Reserved. | Designed & Developed by Alian Software.",
+        "instagram_url": "",
+        "facebook_url": "",
+        "twitter_url": "",
+        "pinterest_url": ""
       }
     }
   },
   "order": [
-    "footer"
+    "waymakers_footer"
   ]
 }

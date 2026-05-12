@@ -8,20 +8,22 @@ class CartDrawer extends HTMLElement {
   }
 
   setHeaderCartIconAccessibility() {
-    const cartLink = document.querySelector('#cart-icon-bubble');
-    if (!cartLink) return;
+    const cartLinks = document.querySelectorAll('#cart-icon-bubble, [data-wm-cart-link]');
+    if (!cartLinks.length) return;
 
-    cartLink.setAttribute('role', 'button');
-    cartLink.setAttribute('aria-haspopup', 'dialog');
-    cartLink.addEventListener('click', (event) => {
-      event.preventDefault();
-      this.open(cartLink);
-    });
-    cartLink.addEventListener('keydown', (event) => {
-      if (event.code.toUpperCase() === 'SPACE') {
+    cartLinks.forEach((cartLink) => {
+      cartLink.setAttribute('role', 'button');
+      cartLink.setAttribute('aria-haspopup', 'dialog');
+      cartLink.addEventListener('click', (event) => {
         event.preventDefault();
         this.open(cartLink);
-      }
+      });
+      cartLink.addEventListener('keydown', (event) => {
+        if (event.code.toUpperCase() === 'SPACE') {
+          event.preventDefault();
+          this.open(cartLink);
+        }
+      });
     });
   }
 
@@ -73,14 +75,17 @@ class CartDrawer extends HTMLElement {
   renderContents(parsedState) {
     this.querySelector('.drawer__inner').classList.contains('is-empty') &&
       this.querySelector('.drawer__inner').classList.remove('is-empty');
+    this.classList.toggle('is-empty', parsedState.item_count === 0);
     this.productId = parsedState.id;
     this.getSectionsToRender().forEach((section) => {
       const sectionElement = section.selector
         ? document.querySelector(section.selector)
         : document.getElementById(section.id);
 
-      if (!sectionElement) return;
-      sectionElement.innerHTML = this.getSectionInnerHTML(parsedState.sections[section.id], section.selector);
+      if (!sectionElement || !parsedState.sections[section.id]) return;
+      const sectionInnerHTML = this.getSectionInnerHTML(parsedState.sections[section.id], section.selector);
+      if (sectionInnerHTML === null) return;
+      sectionElement.innerHTML = sectionInnerHTML;
     });
 
     setTimeout(() => {
@@ -90,7 +95,7 @@ class CartDrawer extends HTMLElement {
   }
 
   getSectionInnerHTML(html, selector = '.shopify-section') {
-    return new DOMParser().parseFromString(html, 'text/html').querySelector(selector).innerHTML;
+    return new DOMParser().parseFromString(html, 'text/html').querySelector(selector)?.innerHTML || null;
   }
 
   getSectionsToRender() {
